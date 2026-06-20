@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David Suarez · Cocinero Privado · Black Gold</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>" />
+  <style>
+    :root {
+      --gold: #e8c45a;
+      --bg: #080808;
+      --bg2: #111111;
+      --card: #181818;
+      --text: #ede8e0;
+      --text2: #706860;
+      --border: rgba(232,196,90,0.12);
+      --shadow-hover: 0 20px 60px rgba(232,196,90,0.06);
+      --transition: 0.4s ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Georgia', 'Times New Roman', serif; background: var(--bg); color: var(--text); line-height: 1.8; overflow-x: hidden; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 22px 0; background: rgba(8,8,8,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: var(--transition); }
+    header .container { display: flex; justify-content: space-between; align-items: center; }
+    header .brand h1 { font-size: 1rem; font-weight: 400; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); }
+    header .brand span { display: none; }
+    nav { display: flex; align-items: center; gap: 36px; }
+    nav a { color: var(--text2); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: color 0.3s; }
+    nav a:hover { color: var(--gold); }
+    .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .menu-toggle span { display: block; width: 24px; height: 1.5px; background: var(--text); transition: var(--transition); }
+    @media (max-width: 700px) {
+      .menu-toggle { display: flex; }
+      nav { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: var(--bg2); flex-direction: column; padding: 80px 40px; gap: 24px; box-shadow: -10px 0 40px rgba(0,0,0,0.5); transition: right 0.4s ease; z-index: 999; }
+      nav.open { right: 0; }
+      nav a { font-size: 0.9rem; }
+      .menu-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998; }
+      .menu-overlay.show { display: block; }
+    }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 0 80px; background: radial-gradient(ellipse at center bottom, #1a1508 0%, #080808 60%); }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-sub { font-size: 0.65rem; letter-spacing: 6px; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+    .hero h2 { font-size: clamp(2.2rem, 5.5vw, 4.2rem); font-weight: 300; letter-spacing: 4px; line-height: 1.2; margin-bottom: 20px; }
+    .hero h2 em { font-style: normal; color: var(--gold); }
+    .hero p { color: var(--text2); font-size: 0.95rem; max-width: 480px; margin: 0 auto 40px; }
+    .hero-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .hero-scroll { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; }
+    .hero-scroll a { color: var(--text2); font-size: 1.2rem; text-decoration: none; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 18px 48px; background: var(--gold); color: #080808; text-decoration: none; letter-spacing: 3px; text-transform: uppercase; font-size: 0.65rem; border: none; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+    .btn:hover { background: var(--text); color: var(--bg); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+    .btn-outline:hover { background: var(--gold); color: #080808; }
+    .btn-accent { background: var(--gold); color: #080808; }
+    .btn-accent:hover { background: var(--text); color: var(--bg); }
+
+    section { padding: 120px 0; }
+    .section-label { font-size: 0.6rem; letter-spacing: 6px; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 8px; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 300; letter-spacing: 3px; text-align: center; margin-bottom: 60px; }
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    #acerca { background: var(--bg2); }
+    .acerca-grid { display: flex; gap: 80px; align-items: center; }
+    .acerca-foto { flex: 1; aspect-ratio: 3/4; background: linear-gradient(135deg, #222, #181818); display: flex; align-items: center; justify-content: center; color: var(--text2); font-size: 2rem; letter-spacing: 2px; border: 1px solid var(--border); }
+    .acerca-texto { flex: 1; }
+    .acerca-texto h3 { font-weight: 300; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 16px; }
+    .acerca-texto h3 span { color: var(--gold); }
+    .acerca-texto p { color: var(--text2); margin-bottom: 12px; font-size: 0.88rem; }
+    .stats { display: flex; gap: 40px; margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .stat h4 { font-size: 2rem; font-weight: 300; color: var(--gold); }
+    .stat p { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text2); margin: 0; }
+    @media (max-width: 780px) { .acerca-grid { flex-direction: column; gap: 40px; } .stats { gap: 24px; } }
+
+    #servicios { background: var(--bg); }
+    .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .servicio-card { background: var(--card); padding: 40px 32px; border: 1px solid var(--border); transition: all var(--transition); }
+    .servicio-card:hover { transform: translateY(-4px); border-color: var(--gold); background: #1e1e1e; }
+    .servicio-card .icono { font-size: 1.8rem; margin-bottom: 16px; }
+    .servicio-card h4 { font-weight: 400; letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 12px; }
+    .servicio-card p { color: var(--text2); font-size: 0.82rem; }
+    .servicio-card .precio { display: inline-block; margin-top: 20px; font-size: 0.7rem; letter-spacing: 2px; color: var(--gold); border: 1px solid var(--border); padding: 6px 16px; }
+    .servicio-card.featured { border-color: var(--gold); background: linear-gradient(145deg, #1e1a10, #181818); }
+    .servicio-card.featured .badge { position: absolute; top: 16px; right: 16px; background: var(--gold); color: #080808; font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase; padding: 4px 12px; }
+
+    #galeria { background: var(--bg2); }
+    .galeria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .galeria-item { aspect-ratio: 1; background: linear-gradient(135deg, #222, #181818); display: flex; align-items: center; justify-content: center; color: var(--text2); font-size: 0.75rem; cursor: pointer; transition: all 0.3s; }
+    .galeria-item:hover { opacity: 0.7; }
+    .galeria-item:nth-child(1) { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; min-height: 320px; }
+    @media (max-width: 700px) { .galeria-grid { grid-template-columns: repeat(2, 1fr); } .galeria-item:nth-child(1) { grid-column: span 2; min-height: 200px; } }
+
+    .testimonios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .testimonio-card { background: var(--card); padding: 36px; border: 1px solid var(--border); }
+    .testimonio-card .stars { color: var(--gold); font-size: 0.8rem; margin-bottom: 12px; }
+    .testimonio-card blockquote { color: var(--text2); font-size: 0.85rem; font-style: italic; margin-bottom: 16px; }
+    .testimonio-card cite { font-style: normal; font-size: 0.8rem; }
+    .testimonio-card cite span { display: block; color: var(--text2); font-size: 0.7rem; margin-top: 2px; }
+
+    #reserva { text-align: center; background: linear-gradient(135deg, #0a0804, #1a1508); }
+    #reserva p { color: var(--text2); max-width: 480px; margin: 0 auto 36px; font-size: 0.88rem; }
+
+    .contacto-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; text-align: center; }
+    .contacto-item a { color: var(--text2); text-decoration: none; display: block; padding: 24px 32px; transition: all 0.3s; }
+    .contacto-item a { transition: all 0.3s; text-decoration: none; display: block; padding: 24px 32px; }
+    .contacto-item a:hover { background: var(--card); transform: translateY(-3px); }
+    .contacto-item a:hover p { color: var(--gold); }
+    .contacto-item .icono { font-size: 1.6rem; margin-bottom: 8px; }
+    .contacto-item h4 { font-weight: 400; letter-spacing: 3px; text-transform: uppercase; font-size: 0.7rem; margin-bottom: 4px; color: var(--text); }
+    .contacto-item p { color: var(--text2); font-size: 0.8rem; transition: color 0.3s; }
+    .contacto-item[data-type="whatsapp"] p { color: #25D366; }
+
+    .back-top { position: fixed; bottom: 90px; right: 24px; z-index: 999; width: 44px; height: 44px; background: var(--gold); color: #080808; border: none; cursor: pointer; font-size: 1.2rem; opacity: 0; pointer-events: none; transition: all 0.3s; }
+    .back-top.show { opacity: 1; pointer-events: auto; }
+    .back-top:hover { background: var(--text); color: var(--bg); }
+
+    footer { padding: 60px 0; text-align: center; border-top: 1px solid var(--border); }
+    footer p { font-size: 0.7rem; color: var(--text2); letter-spacing: 2px; }
+    footer .social { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; }
+    footer .social a { color: var(--text2); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: color 0.2s; }
+    footer .social a:hover { color: var(--gold); }
+
+    /* CHATBOT */
+    #chat-btn { position: fixed; bottom: 90px; right: 24px; z-index: 999; width: 52px; height: 52px; background: var(--gold); border: none; border-radius: 50%; cursor: pointer; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; box-shadow: 0 4px 20px rgba(232,196,90,0.3); color: #080808; }
+    #chat-btn:hover { transform: scale(1.1); background: var(--text); color: var(--bg); }
+    #chat-window { position: fixed; bottom: 160px; right: 24px; z-index: 999; width: 340px; max-height: 460px; background: var(--card); border: 1px solid var(--border); display: none; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    #chat-window.open { display: flex; }
+    #chat-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg2); }
+    #chat-header h4 { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 400; }
+    #chat-header button { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 1.1rem; padding: 0 4px; }
+    #chat-header button:hover { color: var(--gold); }
+    #chat-msgs { flex: 1; padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; max-height: 300px; }
+    #chat-msgs::-webkit-scrollbar { width: 4px; }
+    #chat-msgs::-webkit-scrollbar-thumb { background: var(--border); }
+    .chat-msg { max-width: 85%; padding: 10px 14px; font-size: 0.8rem; line-height: 1.5; animation: msgIn 0.3s ease; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .chat-msg.bot { align-self: flex-start; background: var(--bg2); color: var(--text); border: 1px solid var(--border); }
+    .chat-msg.user { align-self: flex-end; background: var(--gold); color: #080808; }
+    #chat-inputs { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
+    #chat-inputs button { background: var(--bg2); border: 1px solid var(--border); color: var(--text2); padding: 8px 12px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase; font-family: inherit; }
+    #chat-inputs button:hover { background: var(--gold); color: #080808; border-color: var(--gold); }
+    @media (max-width: 500px) { #chat-window { width: calc(100vw - 48px); right: 24px; bottom: 150px; } }
+    .submenu { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .submenu-item { padding: 10px 0; border-bottom: 1px solid rgba(232,196,90,0.06); cursor: pointer; }
+    .submenu-item:last-child { border-bottom: none; }
+    .submenu-item .submenu-label { display: block; font-size: 0.8rem; color: var(--gold); font-weight: 500; letter-spacing: 1px; }
+    .submenu-item .submenu-detail { display: block; font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+    .submenu-item:hover .submenu-label { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="brand"><h1>David Suarez</h1><span>Cocinero Privado</span></div>
+    <nav id="nav">
+      <a href="#acerca">Acerca</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#galeria">Galería</a>
+      <a href="#testimonios">Reseñas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+  </div>
+</header>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<section class="hero" id="inicio">
+  <div class="hero-content container">
+    <p class="hero-sub reveal">Cocina íntima · Momentos únicos</p>
+    <h2 class="reveal">Sabores que <em>transforman</em><br>tu mesa en una experiencia</h2>
+    <p class="reveal">Cocinero privado para hasta 20 comensales. Menús personalizados en la comodidad de tu hogar.</p>
+    <div class="hero-btns reveal">
+      <a href="#servicios" class="btn">Ver servicios</a>
+      <a href="#reserva" class="btn btn-outline">Reservar experiencia</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><a href="#acerca">↓</a></div>
+</section>
+
+<section id="acerca">
+  <div class="container">
+    <p class="section-label reveal">Acerca de mí</p>
+    <h3 class="section-title reveal">Cocinar es <span style="color:var(--gold)">conectar</span></h3>
+    <div class="acerca-grid">
+      <div class="acerca-foto reveal">[tu foto]</div>
+      <div class="acerca-texto reveal">
+        <h3>David Suarez · <span>Cocinero Privado</span></h3>
+        <p>Soy cocinero privado especializado en crear experiencias gastronómicas únicas para reuniones íntimas.</p>
+        <p>Cada menú lo diseño a la medida de tus gustos, la ocasión y tus invitados.</p>
+        <div class="stats"><div class="stat"><h4 class="counter" data-target="120">0</h4><p>Platos creados</p></div><div class="stat"><h4 class="counter" data-target="8">0</h4><p>Años de experiencia</p></div><div class="stat"><h4 class="counter" data-target="500">0</h4><p>Comensales felices</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="container">
+    <p class="section-label reveal">Servicios</p>
+    <h3 class="section-title reveal">Experiencias para <span style="color:var(--gold)">compartir</span></h3>
+    <div class="servicios-grid">
+      <div class="servicio-card reveal featured"><div class="badge">Más popular</div><div class="icono">🍽️</div><h4>Cena Privada</h4><p>Menú personalizado de 4 a 7 tiempos en tu hogar.</p><span class="precio">Desde $120 USD / persona</span></div>
+      <div class="servicio-card reveal"><div class="icono">🥂</div><h4>Evento Social</h4><p>Celebraciones íntimas: cumpleaños, aniversarios.</p><span class="precio">Presupuesto personalizado</span></div>
+      <div class="servicio-card reveal"><div class="icono">🍷</div><h4>Maridaje & Degustación</h4><p>Varios tiempos con maridaje de vinos sugerido.</p><span class="precio">Desde $150 USD / persona</span></div>
+      <div class="servicio-card reveal"><div class="icono">👨‍🍳</div><h4>Chef a Domicilio</h4><p>Llego a tu cocina con ingredientes y utensilios.</p><span class="precio">Desde $100 USD / persona</span></div>
+      <div class="servicio-card reveal"><div class="icono">📋</div><h4>Menú Ejecutivo</h4><p>Comida corporativa para reuniones de trabajo.</p><span class="precio">Desde $80 USD / persona</span></div>
+      <div class="servicio-card reveal"><div class="icono">🥘</div><h4>Cocina con tus Ingredientes</h4><p>Vos comprás los ingredientes, yo cocino en tu casa. Guisados, guarniciones y bebidas naturales.</p><span class="precio">Desde $600 MXN</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="container">
+    <p class="section-label reveal">Galería</p>
+    <h3 class="section-title reveal">Un adelanto de <span style="color:var(--gold)">mi cocina</span></h3>
+    <div class="galeria-grid reveal">
+      <div class="galeria-item">[plato destacado]</div>
+      <div class="galeria-item">[plato 2]</div>
+      <div class="galeria-item">[plato 3]</div>
+      <div class="galeria-item">[plato 4]</div>
+      <div class="galeria-item">[plato 5]</div>
+      <div class="galeria-item">[plato 6]</div>
+      <div class="galeria-item">[plato 7]</div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonios">
+  <div class="container">
+    <p class="section-label reveal">Reseñas</p>
+    <h3 class="section-title reveal">Lo que dicen <span style="color:var(--gold)">mis comensales</span></h3>
+    <div class="testimonios-grid">
+      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"Una experiencia increíble. David hizo de nuestra cena de aniversario algo mágico."</blockquote><cite>María & Carlos <span>Aniversario · 12 personas</span></cite></div>
+      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"Profesional, puntual y la comida fue espectacular."</blockquote><cite>Andrés G. <span>CEO · Cena corporativa</span></cite></div>
+      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"La cena de degustación con maridaje fue única."</blockquote><cite>Laura M. <span>Cumpleaños · 6 personas</span></cite></div>
+    </div>
+  </div>
+</section>
+
+<section id="reserva">
+  <div class="container">
+    <p class="section-label reveal">Reserva</p>
+    <h3 class="section-title reveal">¿Listo para tu experiencia?</h3>
+    <p class="reveal">Contame qué estás celebrando, cuántos serán y tus preferencias culinarias.</p>
+    <div class="reveal"><a href="https://wa.me/1234567890" target="_blank" class="btn btn-accent">💬 Reservar por WhatsApp</a></div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="container">
+    <p class="section-label reveal">Contacto</p>
+    <h3 class="section-title reveal">Hablemos</h3>
+    <div class="contacto-grid reveal">
+      <div class="contacto-item" data-type="whatsapp"><a href="https://wa.me/1234567890" target="_blank"><div class="icono">💬</div><h4>WhatsApp</h4><p style="font-size:0.95rem;font-weight:500;color:#25D366">+1 234 567 890</p></a></div>
+      <div class="contacto-item"><a href="https://instagram.com/davidsuarezchef" target="_blank"><div class="icono">📸</div><h4>Instagram</h4><p>@davidsuarezchef</p></a></div>
+      <div class="contacto-item"><a href="mailto:hola@davidsuarezchef.com"><div class="icono">✉️</div><h4>Email</h4><p>hola@davidsuarezchef.com</p></a></div>
+    </div>
+  </div>
+</section>
+
+<button class="back-top" id="backTop" aria-label="Volver arriba">↑</button>
+
+<button id="chat-btn" aria-label="Chat">💬</button>
+
+<div id="chat-window">
+  <div id="chat-header">
+    <h4>Chat · David Suarez</h4>
+    <button id="chat-close">✕</button>
+  </div>
+  <div id="chat-msgs"></div>
+  <div id="chat-inputs"></div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="social">
+      <a href="https://instagram.com/davidsuarezchef" target="_blank">Instagram</a>
+      <a href="https://wa.me/1234567890" target="_blank">WhatsApp</a>
+      <a href="mailto:hola@davidsuarezchef.com">Email</a>
+    </div>
+    <p>&copy; 2026 David Suarez · Cocinero Privado · Hecho con ♥</p>
+  </div>
+</footer>
+
+<script>
+const toggle=document.getElementById('menuToggle');const nav=document.getElementById('nav');const overlay=document.getElementById('menuOverlay');
+toggle.addEventListener('click',()=>{nav.classList.toggle('open');overlay.classList.toggle('show');});
+overlay.addEventListener('click',()=>{nav.classList.remove('open');overlay.classList.remove('show');});
+document.querySelectorAll('nav a').forEach(a=>{a.addEventListener('click',()=>{nav.classList.remove('open');overlay.classList.remove('show');});});
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');}});},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+const counterObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){const el=entry.target;const target=parseInt(el.dataset.target);let current=0;const step=Math.ceil(target/60);const interval=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(interval);}el.textContent=current;},30);counterObserver.unobserve(el);}});},{threshold:0.5});
+document.querySelectorAll('.counter').forEach(el=>counterObserver.observe(el));
+const backTop=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{backTop.classList.toggle('show',window.scrollY>500);});
+backTop.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});});
+const header=document.querySelector('header');
+window.addEventListener('scroll',()=>{header.style.padding=window.scrollY>80?'14px 0':'22px 0';});
+
+// CHATBOT
+const chatBtn=document.getElementById('chat-btn');
+const chatWin=document.getElementById('chat-window');
+const chatClose=document.getElementById('chat-close');
+const chatMsgs=document.getElementById('chat-msgs');
+const chatInputs=document.getElementById('chat-inputs');
+const faq=[
+   {label:'🍽️ Servicios y precios',msg:'Ofrezco 6 servicios:\n🍽️ Cena Privada - desde $120/pers\n🥂 Evento Social - presupuesto personalizado\n🍷 Maridaje - desde $150/pers\n👨‍🍳 Chef a Domicilio - desde $100/pers\n📋 Menú Ejecutivo - desde $80/pers\n🥘 Cocina con tus Ingredientes - desde $600 MXN (varios paquetes)'},
+  {label:'📅 ¿Cómo reservar?',msg:'Podés reservar por WhatsApp al +1 234 567 890 o usando el botón "Reservar experiencia" en la web.'},
+  {label:'✏️ ¿Personalizás el menú?',msg:'Sí, cada menú lo diseño a medida según tus gustos, la ocasión y cantidad de invitados.'},
+  {label:'📍 Zona de cobertura',msg:'Trabajo en toda la ciudad y zonas cercanas. Consultame por tu ubicación.'},
+  {label:'📸 Otros medios',msg:'También podés contactarme por:\n📸 Instagram: @davidsuarezchef\n✉️ Email: hola@davidsuarezchef.com'}
+];
+function addMsg(text,who){const d=document.createElement('div');d.className='chat-msg '+who;d.textContent=text;chatMsgs.appendChild(d);chatMsgs.scrollTop=chatMsgs.scrollHeight;}
+function showOptions(){chatInputs.innerHTML='';faq.forEach(o=>{const b=document.createElement('button');b.textContent=o.label;b.onclick=()=>{addMsg(o.label,'user');chatInputs.innerHTML='';addMsg(o.msg,'bot');setTimeout(showOptions,600);};chatInputs.appendChild(b);});}
+chatBtn.onclick=()=>{chatWin.classList.toggle('open');if(chatWin.classList.contains('open')&&!chatMsgs.children.length){addMsg('¡Hola! Soy David. Elegí una opción:','bot');showOptions();}chatBtn.style.display='none';};
+chatClose.onclick=()=>{chatWin.classList.remove('open');chatBtn.style.display='flex';};
+
+// EXPANDIBLE SERVICE MENUS
+document.querySelectorAll('.servicio-card').forEach(card=>{card.style.cursor='pointer';card.addEventListener('click',function(e){if(e.target.closest('.submenu'))return;const existing=this.querySelector('.submenu');if(existing){existing.remove();return;}const menus={0:[{label:'4 tiempos · $100/pers',detail:'🥗 Entrada · 🍝 Primer plato · 🥩 Principal · 🍰 Postre'},{label:'5 tiempos · $120/pers',detail:'🥗 Entrada · 🍝 Primero · 🥩 Principal · 🧀 Quesos · 🍰 Postre'},{label:'7 tiempos · $150/pers',detail:'🥗 Entrada fría · 🥟 Caliente · 🍝 Primero · 🥩 Principal · 🧀 Quesos · 🍰 Postre · ☕ Petit fours'},{label:'✏️ Personalizado',detail:'Consultame por WhatsApp para armar tu menú ideal'}],1:[{label:'Pasabocas · $80/pers',detail:'🥟 Mini empanadas · 🥗 Canapés · 🧀 Quesos · 🍢 Brochetas'},{label:'Cena completa · $110/pers',detail:'🥗 Entrada · 🥩 Principal · 🍰 Postre + servicio y limpieza'},{label:'✏️ Personalizado',detail:'Contame el evento y te hago una propuesta única'}],2:[{label:'4 tiempos · $150/pers',detail:'🥗 + 🍝 + 🥩 + 🍰 con maridaje de vinos'},{label:'6 tiempos · $180/pers',detail:'🥗🥗 + 🍝 + 🥩 + 🧀 + 🍰 con maridaje'},{label:'✏️ Personalizado',detail:'Decime tus vinos preferidos y armo la experiencia'}],3:[{label:'Menú básico · $100/pers',detail:'🥗 Entrada · 🥩 Principal · 🍰 Postre'},{label:'Menú premium · $130/pers',detail:'🥗🥟 + 🥩 + 🧀 + 🍰 + servicio completo'},{label:'✏️ Personalizado',detail:'Decime qué cocina te gusta y voy a tu casa'}],4:[{label:'3 tiempos · $80/pers',detail:'🥗 Entrada ejecutiva · 🥩 Plato principal · 🍰 Postre'},{label:'4 tiempos · $95/pers',detail:'🥗 + 🍝 + 🥩 + 🍰 · ideal para juntas'},{label:'✏️ Personalizado',detail:'Consultame por menús corporativos a medida'}],5:[{label:'💰 Por persona · $150 MXN/pers',detail:'Mínimo 6 personas. Incluye 3 guisados, 3 guarniciones, 2 bebidas. Vos comprás los ingredientes.'},{label:'📦 Paquete Básico · $600 MXN',detail:'2 guisados · 2 guarniciones · 1 bebida natural. Ideal para pareja o 3 personas.'},{label:'📦 Paquete Completo · $1,000 MXN',detail:'3 guisados · 3 guarniciones · 2 bebidas naturales. Ideal para 4-6 personas.'},{label:'📦 Paquete Premium · $1,400 MXN',detail:'4 guisados · 4 guarniciones · 3 bebidas naturales. Ideal para 6-8 personas.'},{label:'🇲🇽 Temática: Mexicanísimo · $1,000 MXN',detail:'Mole, chiles rellenos, carnitas · arroz, frijoles, nopales · agua de horchata y jamaica'},{label:'🥗 Temática: Saludable · $1,000 MXN',detail:'Pollo al vapor, verduras salteadas, pescado · ensalada, arroz integral, quinoa · agua de limón y pepino'},{label:'🍝 Temática: Italiana · $1,200 MXN',detail:'Pastas caseras, salsas tradicionales, pan artesanal · ensalada caprese · agua de limón'},{label:'⏳ Medio día (3-4 hrs) · $800 MXN',detail:'Hasta 3 guisados · 2 guarniciones · 2 bebidas. Ideal para comida o cena.'},{label:'⏳ Día completo (6-8 hrs) · $1,500 MXN',detail:'Hasta 5 guisados · 4 guarniciones · 3 bebidas · postre incluido.'},{label:'✏️ Personalizado',detail:'Elegí guisados, guarniciones y bebidas. Vos comprás los ingredientes, yo cocino en tu casa.'}]};const idx=Array.from(document.querySelectorAll('.servicio-card')).indexOf(this);const div=document.createElement('div');div.className='submenu';div.innerHTML=menus[idx].map(m=>'<div class="submenu-item"><span class="submenu-label">'+m.label+'</span><span class="submenu-detail">'+m.detail+'</span></div>').join('');this.appendChild(div);});});
+</script>
+</body>
+</html>

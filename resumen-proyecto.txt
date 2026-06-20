@@ -1,0 +1,53 @@
+Resumen del Proyecto - David Suarez · Chef Privado
+====================================================
+
+Fecha: 18 Junio 2026
+Repositorio: https://github.com/XDavidX-Black/-david-suarez-chef-
+Sitio: https://xdavidx-black.github.io/-david-suarez-chef-/
+
+
+Diseños creados (en Escritorio / david-suarez-chef/)
+------------------------------------------------------
+01-original.html          → Diseño original (actual en GitHub antes del cambio)
+02-elegante-oscuro.html   → Oscuro premium · serif, dorado
+03-natural-rustico.html   → Tonos tierra · verde, terracota
+04-moderno-minimalista.html → Bold · sans-serif, rojo acento
+05-mediterraneo.html      → Azul costero · fresco, vibrante
+06-black-gold.html        → Black & Gold · ULTIMO ELEGIDO - ya subido a GitHub
+07-vino.html              → Tinto profundo · romántico, sofisticado
+08-marmol.html            → Mármol · grises, clean, minimal
+
+
+Diseño seleccionado: Black Gold (06-black-gold.html)
+------------------------------------------------------
+- Tema oscuro con dorado
+- Botón flotante de WhatsApp eliminado (reemplazado por chat)
+- Chatbot interactivo con opciones principales
+- Tarjetas de servicio expandibles al hacer clic (menús con precios)
+- Número de WhatsApp en contacto destacado en verde y clickable
+
+
+Cambios subidos a GitHub
+------------------------
+1. Diseño Black Gold + chatbot básico
+2. Número WhatsApp más visible (verde, clickable)
+3. Eliminado botón flotante verde de WhatsApp
+4. Servicios expandibles con menús y precios al hacer clic
+5. Chatbot simplificado con opciones útiles
+
+
+Pendiente / Ideas
+-----------------
+- [ ] Agregar foto real en "Acerca de mí"
+- [ ] Agregar imágenes de platos en la galería
+- [ ] Actualizar número WhatsApp real
+- [ ] Actualizar Instagram y email reales
+- [ ] Cambiar precios de los menús si es necesario
+- [ ] Agregar más secciones si hace falta
+
+
+Comandos para actualizar GitHub (si querés hacerlo manual)
+-----------------------------------------------------------
+1. git add index.html
+2. git commit -m "descripción del cambio"
+3. git push origin main
