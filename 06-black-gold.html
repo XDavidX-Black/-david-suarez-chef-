@@ -151,6 +151,29 @@
     .submenu-item .submenu-label { display: block; font-size: 0.78rem; color: var(--gold); font-weight: 500; letter-spacing: 1px; line-height: 1.3; }
     .submenu-item .submenu-detail { display: block; font-size: 0.72rem; color: var(--text2); margin-top: 1px; line-height: 1.35; }
     .submenu-item:hover .submenu-label { color: var(--text); }
+
+    /* FAQ */
+    .faq-list { max-width: 700px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-question { width: 100%; background: none; border: none; color: var(--text); padding: 20px 0; font: inherit; font-size: 0.85rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; letter-spacing: 0.5px; }
+    .faq-question:hover { color: var(--gold); }
+    .faq-question span { color: var(--gold); font-size: 1.1rem; transition: transform 0.3s; }
+    .faq-question.open span { transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; padding: 0 20px; color: var(--text2); font-size: 0.82rem; line-height: 1.7; }
+    .faq-answer.open { max-height: 300px; padding: 0 20px 20px; }
+
+    /* FORM */
+    .contacto-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contacto-info { display: flex; flex-direction: column; gap: 20px; }
+    .contacto-info .contacto-item a { padding: 20px 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--bg2); border: 1px solid var(--border); padding: 14px 16px; color: var(--text); font: inherit; font-size: 0.85rem; transition: border 0.3s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select option { background: var(--bg); }
+    .btn-form { width: 100%; }
+    @media (max-width: 780px) { .contacto-wrapper { grid-template-columns: 1fr; gap: 40px; } }
   </style>
 </head>
 <body>
@@ -172,9 +195,9 @@
 
 <section class="hero" id="inicio">
   <div class="hero-content container">
-    <p class="hero-sub reveal">Cocina íntima · Momentos únicos</p>
-    <h2 class="reveal">Sabores que <em>transforman</em><br>tu mesa en una experiencia</h2>
-    <p class="reveal">Cocinero privado para hasta 20 comensales. Menús personalizados en la comodidad de tu hogar.</p>
+    <p class="hero-sub reveal">Cocina privada · Sin atajos</p>
+    <h2 class="reveal">Una mesa, <em>dos manos</em>,<br>ningún atajo</h2>
+    <p class="reveal">Sin equipo detrás. Plato a plato, desde el aperitivo hasta el último bocado, cocino para ti en la comodidad de tu hogar.</p>
     <div class="hero-btns reveal">
       <a href="#servicios" class="btn">Ver servicios</a>
       <a href="#reserva" class="btn btn-outline">Reservar experiencia</a>
@@ -217,15 +240,15 @@
 <section id="galeria">
   <div class="container">
     <p class="section-label reveal">Galería</p>
-    <h3 class="section-title reveal">Un adelanto de <span style="color:var(--gold)">mi cocina</span></h3>
+    <h3 class="section-title reveal">Creaciones de <span style="color:var(--gold)">temporada</span></h3>
     <div class="galeria-grid reveal">
-      <div class="galeria-item">[plato destacado]</div>
-      <div class="galeria-item">[plato 2]</div>
-      <div class="galeria-item">[plato 3]</div>
-      <div class="galeria-item">[plato 4]</div>
-      <div class="galeria-item">[plato 5]</div>
-      <div class="galeria-item">[plato 6]</div>
-      <div class="galeria-item">[plato 7]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/e0ce9577-8d94-4bbd-aec1-0316aa06c406-RKZypZuFvfBBRgX3K5A9Q326jGi0tS.png');background-size:cover;background-position:center;color:transparent">[plato destacado]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/cbb6b43d-31fc-45f9-975c-872318c453ca-8D2z0Uxue3yIZzY6jFZxitEyNBPOXt.png');background-size:cover;background-position:center;color:transparent">[plato 2]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/6fe67570-ee94-4c66-b111-9b482f180bae-xJuV8p964ZvkWHrDCRGrDmRoUZBLuA.png');background-size:cover;background-position:center;color:transparent">[plato 3]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/0735de16-3aa7-4b70-bad9-f6819d10e04b-cpc0HmE68g8NUxZEoFFxtTeS4NlyMN.png');background-size:cover;background-position:center;color:transparent">[plato 4]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/1174cdef-3ff4-4a6c-bf95-cab4e548dd3f-KlX9LluqGYVYJRV4auUxYnvw24JKOu.png');background-size:cover;background-position:center;color:transparent">[plato 5]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/66e015f8-87c1-43e5-8763-0deefcacfc11-9pnGI6lcPzd5E3JGTCxkusuqjxD4JG.png');background-size:cover;background-position:center;color:transparent">[plato 6]</div>
+      <div class="galeria-item" style="background-image:url('https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-media/3fc530f8-d510-45e0-80b7-0f210171db50-5SyzRyJkmefsWIYLJEOUZmeK9tmF6O.png');background-size:cover;background-position:center;color:transparent">[plato 7]</div>
     </div>
   </div>
 </section>
@@ -235,9 +258,23 @@
     <p class="section-label reveal">Reseñas</p>
     <h3 class="section-title reveal">Lo que dicen <span style="color:var(--gold)">mis comensales</span></h3>
     <div class="testimonios-grid">
-      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"Una experiencia increíble. David hizo de nuestra cena de aniversario algo mágico."</blockquote><cite>María & Carlos <span>Aniversario · 12 personas</span></cite></div>
-      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"Profesional, puntual y la comida fue espectacular."</blockquote><cite>Andrés G. <span>CEO · Cena corporativa</span></cite></div>
-      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"La cena de degustación con maridaje fue única."</blockquote><cite>Laura M. <span>Cumpleaños · 6 personas</span></cite></div>
+      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"David llegó a casa, revisó la despensa y preparó una cena que parecía sacada de un restaurante con estrella. Sin ruido, sin prisas. Sencillamente perfecto."</blockquote><cite><img src="https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-content/headshots/d31da806-c49f-47a9-b697-ba3a8af985b6.png" style="width:40px;height:40px;border-radius:50%;vertical-align:middle;margin-right:10px;object-fit:cover" alt="">Mariana Gómez <span>Cena para 6 · Playa del Carmen</span></cite></div>
+      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"No solo cocinó, explicó cada plato, ajustó los tiempos a nuestro ritmo y dejó la cocina impecable. Profesional de pies a cabeza."</blockquote><cite><img src="https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-content/headshots/66ac2970-9caf-40e1-8706-b45890649f0a.png" style="width:40px;height:40px;border-radius:50%;vertical-align:middle;margin-right:10px;object-fit:cover" alt="">Carlos Mendoza <span>Cena íntima · Tulum</span></cite></div>
+      <div class="testimonio-card reveal"><div class="stars">★★★★★</div><blockquote>"Lo mejor fue que no tuve que preocuparme por nada. David se encargó de los ingredientes, la cocción y hasta la presentación."</blockquote><cite><img src="https://rjdavx8ozyznxeyh.public.blob.vercel-storage.com/production/websites/generated-content/headshots/927a2631-261b-4515-8ff0-aa9c0d0e3040.png" style="width:40px;height:40px;border-radius:50%;vertical-align:middle;margin-right:10px;object-fit:cover" alt="">Andrea Rivas <span>Cumpleaños para 8 · Cancún</span></cite></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <p class="section-label reveal">FAQ</p>
+    <h3 class="section-title reveal">Dudas antes de <span style="color:var(--gold)">reservar</span></h3>
+    <div class="faq-list reveal">
+      <div class="faq-item"><button class="faq-question">¿Cuánto tiempo antes debo hacer la reserva?<span>+</span></button><div class="faq-answer">Con al menos una semana me da tiempo para planificar el menú y conseguir los ingredientes más frescos. Para fechas especiales, cuanto antes mejor.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Cocinás en mi casa o tengo que ir a algún lugar?<span>+</span></button><div class="faq-answer">Cocino en tu casa. Llevo todo lo necesario: ingredientes, utensilios y vajilla. Solo necesito una cocina funcional y espacio para trabajar.</div></div>
+      <div class="faq-item"><button class="faq-question">¿El menú se puede adaptar si alguien tiene alergias?<span>+</span></button><div class="faq-answer">Sí, claro. Cuando hacés la reserva me decís las restricciones y ajusto el menú sin problema. Prefiero saberlo antes para tenerlo todo listo.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Los precios incluyen los ingredientes o es aparte?<span>+</span></button><div class="faq-answer">Todo está incluido en el precio que ves: ingredientes, preparación, servicio y limpieza básica. No hay cargos ocultos.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Qué pasa si somos más o menos personas de las previstas?<span>+</span></button><div class="faq-answer">Decime el número exacto unos días antes y ajusto las cantidades. Mi capacidad ideal es hasta 20 personas para mantener la calidad.</div></div>
     </div>
   </div>
 </section>
@@ -254,11 +291,25 @@
 <section id="contacto">
   <div class="container">
     <p class="section-label reveal">Contacto</p>
-    <h3 class="section-title reveal">Hablemos</h3>
-    <div class="contacto-grid reveal">
-      <div class="contacto-item" data-type="whatsapp"><a href="https://wa.me/1234567890" target="_blank"><div class="icono">💬</div><h4>WhatsApp</h4><p style="font-size:0.95rem;font-weight:500;color:#25D366">+1 234 567 890</p></a></div>
-      <div class="contacto-item"><a href="https://instagram.com/davidsuarezchef" target="_blank"><div class="icono">📸</div><h4>Instagram</h4><p>@davidsuarezchef</p></a></div>
-      <div class="contacto-item"><a href="mailto:hola@davidsuarezchef.com"><div class="icono">✉️</div><h4>Email</h4><p>hola@davidsuarezchef.com</p></a></div>
+    <h3 class="section-title reveal">Hablemos de tu evento</h3>
+    <div class="contacto-wrapper reveal">
+      <div class="contacto-info">
+        <div class="contacto-item" data-type="whatsapp"><a href="https://wa.me/1234567890" target="_blank"><div class="icono">💬</div><h4>WhatsApp</h4><p style="font-size:0.95rem;font-weight:500;color:#25D366">+1 234 567 890</p></a></div>
+        <div class="contacto-item"><a href="https://instagram.com/davidsuarezchef" target="_blank"><div class="icono">📸</div><h4>Instagram</h4><p>@davidsuarezchef</p></a></div>
+        <div class="contacto-item"><a href="https://facebook.com/davidsuarezchef" target="_blank"><div class="icono">👍</div><h4>Facebook</h4><p>/davidsuarezchef</p></a></div>
+        <div class="contacto-item"><a href="https://t.me/davidsuarez" target="_blank"><div class="icono">✈️</div><h4>Telegram</h4><p>@davidsuarez</p></a></div>
+        <div class="contacto-item"><a href="mailto:hola@davidsuarezchef.com"><div class="icono">✉️</div><h4>Email</h4><p>hola@davidsuarezchef.com</p></a></div>
+      </div>
+      <form id="contactForm" class="contacto-form">
+        <div class="form-group"><label for="nombre">Nombre</label><input type="text" id="nombre" name="nombre" required placeholder="Tu nombre"></div>
+        <div class="form-group"><label for="email">Correo electrónico</label><input type="email" id="email" name="email" required placeholder="tu@email.com"></div>
+        <div class="form-group"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono" placeholder="+52 555 123 4567"></div>
+        <div class="form-group"><label for="evento">Tipo de evento</label><select id="evento" name="evento"><option value="">Seleccioná...</option><option value="cena">Cena Privada</option><option value="social">Evento Social</option><option value="maridaje">Maridaje & Degustación</option><option value="domicilio">Chef a Domicilio</option><option value="ejecutivo">Menú Ejecutivo</option><option value="ingredientes">Cocina con tus Ingredientes</option></select></div>
+        <div class="form-group"><label for="comensales">Número aproximado de comensales</label><input type="number" id="comensales" name="comensales" min="1" max="20" placeholder="Ej: 6"></div>
+        <div class="form-group"><label for="mensaje">Contame más sobre lo que buscás</label><textarea id="mensaje" name="mensaje" rows="4" placeholder="Fecha, preferencias, restricciones..."></textarea></div>
+        <button type="submit" class="btn btn-form">Enviar mensaje</button>
+        <p id="formStatus" style="margin-top:12px;font-size:0.75rem;color:var(--text2);text-align:center"></p>
+      </form>
     </div>
   </div>
 </section>
@@ -280,6 +331,8 @@
   <div class="container">
     <div class="social">
       <a href="https://instagram.com/davidsuarezchef" target="_blank">Instagram</a>
+      <a href="https://facebook.com/davidsuarezchef" target="_blank">Facebook</a>
+      <a href="https://t.me/davidsuarez" target="_blank">Telegram</a>
       <a href="https://wa.me/1234567890" target="_blank">WhatsApp</a>
       <a href="mailto:hola@davidsuarezchef.com">Email</a>
     </div>
@@ -320,7 +373,11 @@ function showOptions(){chatInputs.innerHTML='';faq.forEach(o=>{const b=document.
 chatBtn.onclick=()=>{chatWin.classList.toggle('open');if(chatWin.classList.contains('open')&&!chatMsgs.children.length){addMsg('¡Hola! Soy David. Elegí una opción:','bot');showOptions();}chatBtn.style.display='none';};
 chatClose.onclick=()=>{chatWin.classList.remove('open');chatBtn.style.display='flex';};
 
-// EXPANDIBLE SERVICE MENUS
+// FAQ ACCORDION
+document.querySelectorAll('.faq-question').forEach(q=>{q.addEventListener('click',()=>{const a=q.nextElementSibling;const isOpen=a.classList.contains('open');document.querySelectorAll('.faq-answer.open').forEach(el=>{el.classList.remove('open');el.previousElementSibling.classList.remove('open');});if(!isOpen){a.classList.add('open');q.classList.add('open');}});});
+
+// CONTACT FORM
+document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const status=document.getElementById('formStatus');status.textContent='Gracias por tu mensaje. Te responderé a la brevedad.';status.style.color='var(--gold)';this.reset();});
 document.querySelectorAll('.servicio-card').forEach(card=>{card.style.cursor='pointer';card.addEventListener('click',function(e){if(e.target.closest('.submenu'))return;const existing=this.querySelector('.submenu');if(existing){existing.remove();return;}const menus={0:[{label:'4 tiempos · $100/pers',detail:'🥗 Entrada · 🍝 Primer plato · 🥩 Principal · 🍰 Postre'},{label:'5 tiempos · $120/pers',detail:'🥗 Entrada · 🍝 Primero · 🥩 Principal · 🧀 Quesos · 🍰 Postre'},{label:'7 tiempos · $150/pers',detail:'🥗 Entrada fría · 🥟 Caliente · 🍝 Primero · 🥩 Principal · 🧀 Quesos · 🍰 Postre · ☕ Petit fours'},{label:'✏️ Personalizado',detail:'Consultame por WhatsApp para armar tu mení ideal'},{label:'🎁 Extras incluidos',detail:'Amuse-bouche de cortesía · Menú impreso personalizado · Café de especialidad + petit fours · Receta escrita a mano de un plato'}],1:[{label:'Pasabocas · $80/pers',detail:'🥟 Mini empanadas · 🥗 Canapés · 🧀 Quesos · 🍢 Brochetas'},{label:'Cena completa · $110/pers',detail:'🥗 Entrada · 🥩 Principal · 🍰 Postre + servicio y limpieza'},{label:'✏️ Personalizado',detail:'Contame el evento y te hago una propuesta única'},{label:'🎁 Extras incluidos',detail:'Brindis sorpresa de espumoso al llegar · Coordinación con decorador · Limpieza completa · Foto grupal que te envío después'}],2:[{label:'4 tiempos · $150/pers',detail:'🥗 + 🍝 + 🥩 + 🍰 con maridaje de vinos'},{label:'6 tiempos · $180/pers',detail:'🥗🥗 + 🍝 + 🥩 + 🧀 + 🍰 con maridaje'},{label:'✏️ Personalizado',detail:'Decime tus vinos preferidos y armo la experiencia'},{label:'🎁 Extras incluidos',detail:'Notas de cata impresas para cada tiempo · Tabla de quesos de cortesía entre platos · Digestivo al final · Recomendaciones escritas de botellas'}],3:[{label:'Menú básico · $100/pers',detail:'🥗 Entrada · 🥩 Principal · 🍰 Postre'},{label:'Menú premium · $130/pers',detail:'🥗🥟 + 🥩 + 🧀 + 🍰 + servicio completo'},{label:'✏️ Personalizado',detail:'Decime qué cocina te gusta y voy a tu casa'},{label:'🎁 Extras incluidos',detail:'Limpieza total de la cocina al terminar · Playlist personalizada según el tipo de cocina · Demostración en vivo (15 min) · Sobras empaquetadas tipo meal-prep'}],4:[{label:'3 tiempos · $80/pers',detail:'🥗 Entrada ejecutiva · 🥩 Plato principal · 🍰 Postre'},{label:'4 tiempos · $95/pers',detail:'🥗 + 🍝 + 🥩 + 🍰 · ideal para juntas'},{label:'✏️ Personalizado',detail:'Consultame por menús corporativos a medida'},{label:'🎁 Extras incluidos',detail:'Cafetería incluida (café, té, galletas artesanales) · Box individual para llevar · Menú saludable express opcional · Agua de sabor toda la reunión'}],5:[{label:'💰 Por persona · $150 MXN/pers',detail:'Mínimo 6 personas. Incluye 3 guisados, 3 guarniciones, 2 bebidas. Vos comprás los ingredientes.'},{label:'📦 Paquete Básico · $600 MXN',detail:'2 guisados · 2 guarniciones · 1 bebida natural. Ideal para pareja o 3 personas.'},{label:'📦 Paquete Completo · $1,000 MXN',detail:'3 guisados · 3 guarniciones · 2 bebidas naturales. Ideal para 4-6 personas.'},{label:'📦 Paquete Premium · $1,400 MXN',detail:'4 guisados · 4 guarniciones · 3 bebidas naturales. Ideal para 6-8 personas.'},{label:'🇲🇽 Temática: Mexicanísimo · $1,000 MXN',detail:'Mole, chiles rellenos, carnitas · arroz, frijoles, nopales · agua de horchata y jamaica'},{label:'🥗 Temática: Saludable · $1,000 MXN',detail:'Pollo al vapor, verduras salteadas, pescado · ensalada, arroz integral, quinoa · agua de limón y pepino'},{label:'🍝 Temática: Italiana · $1,200 MXN',detail:'Pastas caseras, salsas tradicionales, pan artesanal · ensalada caprese · agua de limón'},{label:'⏳ Medio día (3-4 hrs) · $800 MXN',detail:'Hasta 3 guisados · 2 guarniciones · 2 bebidas. Ideal para comida o cena.'},{label:'⏳ Día completo (6-8 hrs) · $1,500 MXN',detail:'Hasta 5 guisados · 4 guarniciones · 3 bebidas · postre incluido.'},{label:'✏️ Personalizado',detail:'Elegí guisados, guarniciones y bebidas. Vos comprás los ingredientes, yo cocino en tu casa.'},{label:'🎁 Extras incluidos',detail:'3 recipientes reutilizables para guardar · Receta escrita de los guisados · Seguimiento WhatsApp al día siguiente · 1 litro extra de bebida de cortesía'}];const idx=Array.from(document.querySelectorAll('.servicio-card')).indexOf(this);const div=document.createElement('div');div.className='submenu';div.innerHTML=menus[idx].map(m=>'<div class="submenu-item"><span class="submenu-label">'+m.label+'</span><span class="submenu-detail">'+m.detail+'</span></div>').join('');this.appendChild(div);});});
 </script>
 </body>
