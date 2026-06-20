@@ -78,7 +78,7 @@
     @media (max-width: 780px) { .acerca-grid { flex-direction: column; gap: 40px; } .stats { gap: 24px; } }
 
     #servicios { background: var(--bg); }
-    .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start; }
+    .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start; /* each card independent height */ }
     .servicio-card { background: var(--card); padding: 40px 32px; border: 1px solid var(--border); transition: all var(--transition); }
     .servicio-card:hover { transform: translateY(-4px); border-color: var(--gold); background: #1e1e1e; }
     .servicio-card .icono { font-size: 1.8rem; margin-bottom: 16px; }
