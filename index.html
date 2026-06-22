@@ -147,6 +147,19 @@ footer p{font-size:.65rem;color:var(--text2);letter-spacing:2px}
 .terms-col li{color:var(--text2);font-size:.78rem;line-height:1.7;padding:3px 0;position:relative;padding-left:14px}
 .terms-col li::before{content:'\2013';position:absolute;left:0;color:var(--gold)}
 @media(max-width:600px){.terms-grid{grid-template-columns:1fr}}
+@media(max-width:480px){
+section{padding:60px 0}
+.hero h2{font-size:clamp(1.6rem,7vw,2.4rem);letter-spacing:1px}
+.hero{padding:100px 0 60px}
+.serv-card img{height:160px}
+.serv-grid{grid-template-columns:1fr}
+.test-grid{grid-template-columns:1fr}
+.gal-item:first-child{min-height:160px}
+.gal-grid{gap:4px}
+.contact-grid{gap:28px}
+.container{padding:0 16px}
+.terms-wrap summary{font-size:.75rem}
+}
 
 /* CHATBOT */
 #chat-btn{position:fixed;bottom:30px;right:24px;z-index:999;width:50px;height:50px;background:var(--gold);border:none;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 20px rgba(232,196,90,.25);color:#080808}
