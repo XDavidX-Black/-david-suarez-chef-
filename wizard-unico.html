@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicio Único · David Suarez Chef</title>
+<meta name="description" content="Presupuesto para cena privada o evento único con el chef David Suarez.">
+<meta name="theme-color" content="#0a0a0a">
+<style>
+:root{--gold:#e8c45a;--bg:#0a0a0a;--bg2:#111;--card:#151515;--text:#ede8e0;--text2:#706860;--border:rgba(232,196,90,0.1);--transition:0.4s ease}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+header{padding:18px 0;background:rgba(10,10,10,0.95);border-bottom:1px solid var(--border)}
+header .container{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;align-items:center}
+header a{color:var(--text2);text-decoration:none;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;transition:color .3s}
+header a:hover{color:var(--gold)}
+.lang-toggle{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:inherit;line-height:1}
+.lang-toggle:hover{color:var(--gold);border-color:var(--gold)}
+.wiz-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:680px;margin:0 auto;padding:60px 28px;width:100%}
+.wiz-header{text-align:center;margin-bottom:40px}
+.wiz-header .section-label{font-size:.55rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.wiz-header h2{font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;letter-spacing:2px;margin-bottom:6px}
+.wiz-header p{color:var(--text2);font-size:.8rem;max-width:440px;margin:0 auto}
+.wiz-progress{display:flex;justify-content:center;gap:4px;margin-bottom:40px;align-items:center;flex-wrap:wrap}
+.wiz-dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.45rem;color:var(--text2);transition:all .3s;font-family:'Georgia',serif;background:transparent;flex-shrink:0}
+.wiz-dot.active{background:var(--gold);color:#080808;border-color:var(--gold)}
+.wiz-dot.done{background:rgba(232,196,90,0.12);border-color:var(--gold);color:var(--gold)}
+.wiz-line{width:10px;height:1px;background:var(--border);flex-shrink:0}
+.wiz-line.done{background:var(--gold)}
+.wiz-steps{position:relative}
+.wiz-step{display:none;animation:wizFade .35s ease;max-width:520px;margin:0 auto}
+.wiz-step.active{display:block}
+@keyframes wizFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.wiz-q{font-size:1rem;font-weight:300;letter-spacing:1.5px;text-align:center;margin-bottom:4px;line-height:1.4}
+.wiz-hint{font-size:.6rem;color:var(--text2);text-align:center;margin-bottom:20px;letter-spacing:.5px;line-height:1.5;font-style:italic}
+.wiz-opts{display:grid;gap:10px;margin:0 auto}
+.wiz-opts.cols-3{grid-template-columns:repeat(3,1fr);max-width:420px}
+.wiz-opts.cols-2{grid-template-columns:repeat(2,1fr);max-width:400px}
+.wiz-opts.cols-1{grid-template-columns:1fr;max-width:360px}
+.wiz-opt{background:var(--card);border:1px solid var(--border);padding:14px 10px;text-align:center;cursor:pointer;transition:all .3s;font-family:inherit;color:var(--text2);font-size:.72rem;letter-spacing:1.5px;line-height:1.3}
+.wiz-opt:hover{border-color:var(--gold);color:var(--gold)}
+.wiz-opt.selected{background:rgba(232,196,90,0.08);border-color:var(--gold);color:var(--gold)}
+.wiz-opt .wiz-emoji{display:block;font-size:1.4rem;margin-bottom:4px;line-height:1}
+.wiz-opt .wiz-sub{display:block;font-size:.5rem;letter-spacing:1px;color:var(--text2);margin-top:3px;font-weight:300;text-transform:uppercase;line-height:1.4}
+.wiz-opt.selected .wiz-sub{color:var(--gold)}
+.wiz-input{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;color:var(--text);font:inherit;font-size:.82rem;width:100%;max-width:380px;display:block;margin:0 auto 12px;transition:border .3s}
+.wiz-input:focus{outline:none;border-color:var(--gold)}
+.wiz-input.invalid,.wiz-select.invalid,.wiz-textarea.invalid{border-color:#c0392b;box-shadow:0 0 0 1px rgba(192,57,43,0.3)}
+.wiz-err{color:#c0392b;font-size:.55rem;letter-spacing:1px;text-align:center;margin:-6px 0 8px;display:none}
+.wiz-err.show{display:block}
+.wiz-select{background:var(--bg2);border:1px solid var(--border);padding:13px 16px;color:var(--text);font:inherit;font-size:.78rem;width:100%;max-width:280px;cursor:pointer;display:block;margin:0 auto 12px;transition:border .3s}
+.wiz-select:focus{outline:none;border-color:var(--gold)}
+.wiz-select option{background:var(--bg)}
+.wiz-textarea{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;color:var(--text);font:inherit;font-size:.78rem;width:100%;max-width:420px;min-height:80px;resize:vertical;display:block;margin:0 auto;font-family:inherit;transition:border .3s}
+.wiz-textarea:focus{outline:none;border-color:var(--gold)}
+.wiz-nav{display:flex;justify-content:space-between;gap:14px;margin-top:36px;max-width:400px;margin-left:auto;margin-right:auto}
+.wiz-nav .btn{padding:14px 32px;min-width:120px;justify-content:center;font-size:.55rem;display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#080808;text-decoration:none;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+.wiz-nav .btn:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+.wiz-nav .btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.wiz-nav .btn-outline:hover{background:var(--gold);color:#080808}
+#wizPrev{display:none}
+.restrict-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:400px;margin:0 auto}
+.restrict-opt{background:var(--card);border:1px solid var(--border);padding:10px;text-align:center;cursor:pointer;transition:all .3s;font-family:inherit;color:var(--text2);font-size:.65rem;letter-spacing:1px;line-height:1.2}
+.restrict-opt:hover{border-color:var(--gold);color:var(--gold)}
+.restrict-opt.selected{background:rgba(232,196,90,0.08);border-color:var(--gold);color:var(--gold)}
+#calcResult{display:none;text-align:center;padding:32px;border:1px solid var(--border);max-width:480px;margin:28px auto 0;animation:wizFade .4s ease}
+#calcResult .calc-price{font-size:clamp(2rem,4vw,3rem);color:var(--gold);font-weight:300;letter-spacing:2px;margin-bottom:6px}
+#calcResult .calc-note{font-size:.72rem;color:var(--text2);margin-bottom:6px;line-height:1.6}
+#calcResult .calc-detail{font-size:.6rem;color:var(--text2);letter-spacing:1px;margin-bottom:20px}
+#calcResult .btn{margin-top:6px;display:inline-flex;align-items:center;gap:8px;padding:16px 44px;background:var(--gold);color:#080808;text-decoration:none;letter-spacing:3px;text-transform:uppercase;font-size:.6rem;border:none;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+#calcResult .btn:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+/* Calendar */
+.cal-wrap{max-width:340px;margin:0 auto}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 4px}
+.cal-header button{background:none;border:1px solid var(--border);color:var(--gold);font-size:.8rem;cursor:pointer;padding:4px 10px;transition:all .3s;font-family:inherit}
+.cal-header button:hover{background:var(--gold);color:#080808}
+.cal-header span{font-size:.8rem;letter-spacing:2px;color:var(--text)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal-grid .cal-day{font-size:.55rem;color:var(--text2);padding:4px 0;letter-spacing:1px;text-transform:uppercase}
+.cal-grid .cal-num{font-size:.72rem;color:var(--text2);padding:6px 0;cursor:pointer;border:1px solid transparent;transition:all .2s;border-radius:0}
+.cal-grid .cal-num:hover{border-color:var(--gold);color:var(--gold)}
+.cal-grid .cal-num.selected{background:var(--gold);color:#080808;border-color:var(--gold)}
+.cal-grid .cal-num.empty{cursor:default}
+.cal-grid .cal-num.today{color:var(--gold);font-weight:600}
+.cal-hint{text-align:center;font-size:.55rem;color:var(--text2);margin-top:10px;letter-spacing:1px;font-style:italic}
+.chk-wrap{text-align:center;margin:12px auto;max-width:420px}
+.chk-wrap label{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;color:var(--text2)}
+.chk-wrap input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
+footer{padding:30px 0;text-align:center;border-top:1px solid var(--border);margin-top:auto}
+footer p{font-size:.6rem;color:var(--text2);letter-spacing:2px}
+footer a{color:var(--gold);text-decoration:none}
+@media(max-width:600px){
+.wiz-wrap{padding:40px 16px}
+.wiz-opts.cols-3{grid-template-columns:repeat(2,1fr)}
+.wiz-dot{width:22px;height:22px;font-size:.4rem}
+.wiz-line{width:8px}
+.wiz-nav{flex-direction:column;max-width:280px}
+.wiz-nav .btn{width:100%;justify-content:center}
+.restrict-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<a href="wizard.html">← Volver</a>
+<button class="lang-toggle" onclick="toggleLang()" id="langToggle" data-lang="es">EN</button>
+</div>
+</header>
+
+<div class="wiz-wrap">
+
+<div class="wiz-header">
+<p class="section-label" data-i18n="wu_label">Servicio único</p>
+<h2 data-i18n="wu_title">Presupuesto para tu evento</h2>
+<p data-i18n="wu_desc">Respondé paso a paso y recibí propuestas de menú personalizadas.</p>
+</div>
+
+<div class="wiz-progress" id="wizProgress"></div>
+
+<div class="wiz-steps" id="wizSteps">
+
+<!-- Step 0: Occasion -->
+<div class="wiz-step active" data-step="0">
+<p class="wiz-q" data-i18n="wu_occ_q">¿Cuál es la ocasión?</p>
+<div class="wiz-opts cols-2" style="max-width:420px">
+<button class="wiz-opt" data-value="cumple" onclick="selectWiz(this,'occasion')"><span class="wiz-emoji">🎂</span><span data-i18n="wu_occ_cumple">Cumpleaños</span></button>
+<button class="wiz-opt" data-value="familiar" onclick="selectWiz(this,'occasion')"><span class="wiz-emoji">👨‍👩‍👧‍👦</span><span data-i18n="wu_occ_familiar">Reunión familiar</span></button>
+<button class="wiz-opt" data-value="despedida" onclick="selectWiz(this,'occasion')"><span class="wiz-emoji">🥂</span><span data-i18n="wu_occ_despedida">Despedida de soltera/o</span></button>
+<button class="wiz-opt" data-value="amigos" onclick="selectWiz(this,'occasion')"><span class="wiz-emoji">🍻</span><span data-i18n="wu_occ_amigos">Reunión con amigos</span></button>
+<button class="wiz-opt" data-value="romantica" onclick="selectWiz(this,'occasion')"><span class="wiz-emoji">🍷</span><span data-i18n="wu_occ_romantica">Cena romántica</span></button>
+<button class="wiz-opt" data-value="corp" onclick="selectWiz(this,'occasion')"><span class="wiz-emoji">💼</span><span data-i18n="wu_occ_corp">Evento corporativo</span></button>
+</div>
+<p class="wiz-err" id="wuOccErr" data-i18n="wu_occ_err">Seleccioná una ocasión para continuar</p>
+</div>
+
+<!-- Step 1: Location -->
+<div class="wiz-step" data-step="1">
+<p class="wiz-q" data-i18n="wu_loc_q">¿Dónde será el evento?</p>
+<p class="wiz-hint" data-i18n="wu_loc_hint">Introduce ciudad o dirección completa</p>
+<input type="text" id="wuLoc" class="wiz-input" placeholder="Ej: Playa del Carmen, Quintana Roo" data-i18n-placeholder="wu_loc_ph" style="max-width:420px">
+</div>
+
+<!-- Step 2: People -->
+<div class="wiz-step" data-step="2">
+<p class="wiz-q" data-i18n="wu_pax_q">¿Para cuántas personas?</p>
+<p class="wiz-hint" data-i18n="wu_pax_hint">La tarifa del chef es fija, por lo que el precio por persona varía según el tamaño del grupo.</p>
+<div class="wiz-opts cols-2" style="max-width:360px">
+<button class="wiz-opt" data-value="2" onclick="selectWiz(this,'pax')"><span class="wiz-emoji">👤👤</span><span data-i18n="wu_pax_2">2 personas</span></button>
+<button class="wiz-opt selected" data-value="3-6" onclick="selectWiz(this,'pax')"><span class="wiz-emoji">👥</span><span data-i18n="wu_pax_3_6">3 a 6</span></button>
+<button class="wiz-opt" data-value="7-10" onclick="selectWiz(this,'pax')"><span class="wiz-emoji">👥👥</span><span data-i18n="wu_pax_7_10">7 a 10</span></button>
+<button class="wiz-opt" data-value="11-15" onclick="selectWiz(this,'pax')"><span class="wiz-emoji">👥👥👥</span><span data-i18n="wu_pax_11_15">11 a 15</span></button>
+</div>
+<p class="wiz-hint" style="margin-top:8px" data-i18n="wu_pax_change">¿No estás seguro? Puedes cambiarlo más adelante! 😉</p>
+</div>
+
+<!-- Step 3: Time -->
+<div class="wiz-step" data-step="3">
+<p class="wiz-q" data-i18n="wu_time_q">¿A qué hora?</p>
+<div style="display:flex;gap:10px;justify-content:center;max-width:280px;margin:0 auto">
+<button class="wiz-opt selected" data-value="comida" onclick="selectWiz(this,'time')"><span class="wiz-emoji">☀️</span><span data-i18n="wu_time_lunch">Comida</span></button>
+<button class="wiz-opt" data-value="cena" onclick="selectWiz(this,'time')"><span class="wiz-emoji">🌙</span><span data-i18n="wu_time_dinner">Cena</span></button>
+</div></div>
+
+<!-- Step 4: Cuisine -->
+<div class="wiz-step" data-step="4">
+<p class="wiz-q" data-i18n="wu_cuisine_q">¿Qué te apetece?</p>
+<p class="wiz-hint" data-i18n="wu_cuisine_hint">Si necesitas más inspiración, prueba el especial del chef.</p>
+<div class="wiz-opts cols-2" style="max-width:360px">
+<button class="wiz-opt" data-value="local" onclick="selectWiz(this,'cuisine')"><span class="wiz-emoji">🌮</span><span data-i18n="wu_cuisine_local">Local</span></button>
+<button class="wiz-opt" data-value="italiana" onclick="selectWiz(this,'cuisine')"><span class="wiz-emoji">🍝</span><span data-i18n="wu_cuisine_italiana">Italiana</span></button>
+<button class="wiz-opt" data-value="mariscos" onclick="selectWiz(this,'cuisine')"><span class="wiz-emoji">🐟</span><span data-i18n="wu_cuisine_mariscos">Mariscos / Pescados</span></button>
+<button class="wiz-opt" data-value="mexicana" onclick="selectWiz(this,'cuisine')"><span class="wiz-emoji">🌶️</span><span data-i18n="wu_cuisine_mexicana">Mexicana</span></button>
+</div>
+<p class="wiz-err" id="wuCuisineErr" data-i18n="wu_cuisine_err">Seleccioná un tipo de cocina para continuar</p>
+</div>
+
+<!-- Step 5: Date (calendar) -->
+<div class="wiz-step" data-step="5">
+<p class="wiz-q" data-i18n="wu_date_q">¿Cuándo?</p>
+<div class="cal-wrap">
+<div class="cal-header">
+<button onclick="calMonth(-1)">←</button>
+<span id="calMonthLabel"></span>
+<button onclick="calMonth(1)">→</button>
+</div>
+<div class="cal-grid" id="calGrid"></div>
+</div>
+<p class="wiz-hint" style="margin-top:10px" data-i18n="wu_date_change">¿No estás seguro? Puedes cambiarlo más adelante! 😉</p>
+</div>
+
+<!-- Step 6: Budget -->
+<div class="wiz-step" data-step="6">
+<p class="wiz-q" data-i18n="wu_budget_q">¿Cuál es tu presupuesto para esta experiencia?</p>
+<p class="wiz-hint" data-i18n="wu_budget_hint">Los precios varían según la experiencia del chef y la complejidad del menú. ¡Elige el que más te convenga!</p>
+<div class="wiz-opts cols-1" style="max-width:400px">
+<button class="wiz-opt selected" data-value="casual" onclick="selectWiz(this,'budget')"><span data-i18n="wu_budget_casual">Casual</span><span class="wiz-sub" data-i18n="wu_budget_casual_sub">Crear vínculos en torno a la buena comida · $800 - $1200 por persona</span></button>
+<button class="wiz-opt" data-value="gourmet" onclick="selectWiz(this,'budget')"><span data-i18n="wu_budget_gourmet">Gourmet</span><span class="wiz-sub" data-i18n="wu_budget_gourmet_sub">Menús brillantes para impresionar a tus invitados · $1200 - $1500 por persona</span></button>
+<button class="wiz-opt" data-value="exclusive" onclick="selectWiz(this,'budget')"><span data-i18n="wu_budget_exclusive">Selección exclusiva</span><span class="wiz-sub" data-i18n="wu_budget_exclusive_sub">Lo mejor de lo mejor para tu evento · $1500 - $2000 por persona</span></button>
+</div></div>
+
+<!-- Step 7: Restrictions -->
+<div class="wiz-step" data-step="7">
+<p class="wiz-q" data-i18n="wu_restrict_q">¿Alguna restricción alimentaria?</p>
+<p class="wiz-hint" data-i18n="wu_restrict_hint">Si necesitas comprobarlo con tus invitados, no hay problema. Puedes informar a tu chef más tarde.</p>
+<div style="display:flex;gap:10px;justify-content:center;max-width:280px;margin:0 auto 16px">
+<button class="wiz-opt selected" data-value="no" onclick="showRestrictDetail(false)" style="flex:1" id="restrictNo" data-i18n="wu_restrict_no">Ninguna</button>
+<button class="wiz-opt" data-value="si" onclick="showRestrictDetail(true)" style="flex:1" id="restrictSi" data-i18n="wu_restrict_si">Sí</button>
+</div>
+<div id="restrictDetail" style="display:none">
+<p class="wiz-hint" data-i18n="wu_restrict_detail_hint">Selecciona todo lo que corresponda. Con esta información, nuestros chefs elaborarán menús personalizados adaptados a tus necesidades.</p>
+<div class="restrict-grid" style="margin-bottom:12px">
+<div class="restrict-opt" data-value="vegetarian" onclick="toggleRestrict(this)" data-i18n="wu_restrict_veg">Vegetariano</div>
+<div class="restrict-opt" data-value="mariscos" onclick="toggleRestrict(this)" data-i18n="wu_restrict_seafood">Mariscos</div>
+<div class="restrict-opt" data-value="gluten" onclick="toggleRestrict(this)" data-i18n="wu_restrict_gluten">Gluten</div>
+<div class="restrict-opt" data-value="lacteos" onclick="toggleRestrict(this)" data-i18n="wu_restrict_dairy">Lácteos</div>
+<div class="restrict-opt" data-value="nuts" onclick="toggleRestrict(this)" data-i18n="wu_restrict_nuts">Frutos secos</div>
+</div>
+<input type="text" id="wuRestrictOther" class="wiz-input" placeholder="Otras restricciones..." data-i18n-placeholder="wu_restrict_other_ph" style="max-width:400px">
+</div>
+<p class="wiz-hint" style="margin-top:6px" data-i18n="wu_restrict_change">¿No estás seguro? Puedes cambiarlo más adelante! 😉</p>
+</div>
+
+<!-- Step 8: Description -->
+<div class="wiz-step" data-step="8">
+<p class="wiz-q" data-i18n="wu_desc_q">Por último, describe tu evento a tu chef</p>
+<p class="wiz-hint" data-i18n="wu_desc_hint">Comparte detalles sobre la ocasión, el ambiente, el menú ideal y cualquier otra información clave para que puedan hacerlo perfecto.</p>
+<textarea id="wuDesc" class="wiz-textarea" rows="5" placeholder="Ej: Cena romántica de aniversario, música suave, preferencia por mariscos, entrada, plato fuerte y postre..." data-i18n-placeholder="wu_desc_ph"></textarea>
+</div>
+
+<!-- Step 9: Contact -->
+<div class="wiz-step" data-step="9">
+<p class="wiz-q" data-i18n="wu_contact_q">¡Ya está!</p>
+<p class="wiz-hint" data-i18n="wu_contact_hint">Ahora, sólo tienes que añadir tus datos de contacto y te enviaremos propuestas de menú personalizadas y gratuitas en menos de 20 minutos.</p>
+<div style="max-width:340px;margin:0 auto">
+<input type="text" id="wuName" class="wiz-input" placeholder="Nombre *" data-i18n-placeholder="wu_name_ph" required>
+<input type="email" id="wuEmail" class="wiz-input" placeholder="Email *" data-i18n-placeholder="wu_email_ph" required>
+<div style="display:flex;gap:8px;align-items:center;max-width:340px;margin:0 auto 12px">
+<select id="wuPhonePrefix" class="wiz-select" style="max-width:80px;margin:0;flex-shrink:0">
+<option value="+52">🇲🇽 +52</option>
+<option value="+1">🇺🇸 +1</option>
+<option value="+34">🇪🇸 +34</option>
+</select>
+<input type="tel" id="wuPhone" class="wiz-input" placeholder="Teléfono *" data-i18n-placeholder="wu_phone_ph" style="margin:0;flex:1" required>
+</div>
+<select id="wuFound" class="wiz-select" style="max-width:340px;margin:0 auto 16px">
+<option value="" data-i18n="wu_found_ph">¿Cómo nos conociste?</option>
+<option value="google" data-i18n="wu_found_google">Google</option>
+<option value="instagram" data-i18n="wu_found_instagram">Instagram</option>
+<option value="recommendation" data-i18n="wu_found_rec">Recomendación</option>
+<option value="airbnb" data-i18n="wu_found_airbnb">Airbnb</option>
+<option value="other" data-i18n="wu_found_other">Otro</option>
+</select>
+<div class="chk-wrap">
+<label><input type="checkbox" id="wuTerms"> <span data-i18n="wu_terms"></span></label>
+<p class="wiz-err" id="wuTermsErr" data-i18n="wu_terms_err">Debés aceptar los términos para continuar</p>
+</div>
+</div></div>
+
+</div><!-- /wiz-steps -->
+
+<div class="wiz-nav">
+<button class="btn btn-outline" id="wizPrev" onclick="wizPrev()" data-i18n="wu_prev">Anterior</button>
+<button class="btn" id="wizNext" onclick="wizNext()" data-i18n="wu_next">Siguiente</button>
+</div>
+
+<div id="calcResult">
+<div class="calc-price" id="calcPrice">$0 USD</div>
+<div class="calc-note" id="calcNote"></div>
+<div class="calc-detail" id="calcDetail"></div>
+<a href="#" class="btn" id="calcCTA" data-i18n="wu_cta">Enviar solicitud</a>
+</div>
+
+</div>
+
+<footer>
+<p data-i18n="wu_footer">&copy; 2026 David Suarez · Cocinero Privado</p>
+<p style="margin-top:6px"><a href="terminos.html" style="color:var(--gold);text-decoration:none;font-size:.5rem;letter-spacing:2px;text-transform:uppercase">Términos y Condiciones</a></p>
+</footer>
+
+<script>
+const TOTAL_STEPS=10;
+let currentLang='es';
+let wizStep=0;
+let wizData={occasion:'',location:'',pax:'3-6',time:'comida',cuisine:'',date:'',budget:'casual',hasRestrictions:false,restrictions:[],restrictOther:'',description:'',name:'',email:'',phonePrefix:'+52',phone:'',howFound:'',terms:false};
+let wizRestrictions=[];
+let calMonthIdx=new Date().getMonth();
+let calYear=new Date().getFullYear();
+
+const lang={
+es:{
+wu_label:'Servicio único',wu_title:'Presupuesto para tu evento',wu_desc:'Respondé paso a paso y recibí propuestas de menú personalizadas.',
+wu_occ_q:'¿Cuál es la ocasión?',wu_occ_err:'Seleccioná una ocasión para continuar',
+wu_occ_cumple:'Cumpleaños',wu_occ_familiar:'Reunión familiar',wu_occ_despedida:'Despedida de soltera/o',wu_occ_amigos:'Reunión con amigos',wu_occ_romantica:'Cena romántica',wu_occ_corp:'Evento corporativo',
+wu_loc_q:'¿Dónde será el evento?',wu_loc_hint:'Introduce ciudad o dirección completa',wu_loc_ph:'Ej: Playa del Carmen, Quintana Roo',
+wu_pax_q:'¿Para cuántas personas?',wu_pax_hint:'La tarifa del chef es fija, por lo que el precio por persona varía según el tamaño del grupo.',
+wu_pax_2:'2 personas',wu_pax_3_6:'3 a 6',wu_pax_7_10:'7 a 10',wu_pax_11_15:'11 a 15',wu_pax_change:'¿No estás seguro? Puedes cambiarlo más adelante! 😉',
+wu_time_q:'¿A qué hora?',wu_time_lunch:'Comida',wu_time_dinner:'Cena',
+wu_cuisine_q:'¿Qué te apetece?',wu_cuisine_hint:'Si necesitas más inspiración, prueba el especial del chef.',wu_cuisine_err:'Seleccioná un tipo de cocina para continuar',
+wu_cuisine_local:'Local',wu_cuisine_italiana:'Italiana',wu_cuisine_mariscos:'Mariscos / Pescados',wu_cuisine_mexicana:'Mexicana',
+wu_date_q:'¿Cuándo?',wu_date_change:'¿No estás seguro? Puedes cambiarlo más adelante! 😉',
+wu_budget_q:'¿Cuál es tu presupuesto para esta experiencia?',wu_budget_hint:'Los precios varían según la experiencia del chef y la complejidad del menú. ¡Elige el que más te convenga!',
+wu_budget_casual:'Casual',wu_budget_casual_sub:'Crear vínculos en torno a la buena comida · $800 - $1200 por persona',
+wu_budget_gourmet:'Gourmet',wu_budget_gourmet_sub:'Menús brillantes para impresionar a tus invitados · $1200 - $1500 por persona',
+wu_budget_exclusive:'Selección exclusiva',wu_budget_exclusive_sub:'Lo mejor de lo mejor para tu evento · $1500 - $2000 por persona',
+wu_restrict_q:'¿Alguna restricción alimentaria?',wu_restrict_hint:'Si necesitas comprobarlo con tus invitados, no hay problema. Puedes informar a tu chef más tarde.',
+wu_restrict_no:'Ninguna',wu_restrict_si:'Sí',
+wu_restrict_detail_hint:'Selecciona todo lo que corresponda. Con esta información, nuestros chefs elaborarán menús personalizados adaptados a tus necesidades.',
+wu_restrict_veg:'Vegetariano',wu_restrict_seafood:'Mariscos',wu_restrict_gluten:'Gluten',wu_restrict_dairy:'Lácteos',wu_restrict_nuts:'Frutos secos',
+wu_restrict_other_ph:'Otras restricciones...',
+wu_restrict_change:'¿No estás seguro? Puedes cambiarlo más adelante! 😉',
+wu_desc_q:'Por último, describe tu evento a tu chef',wu_desc_hint:'Comparte detalles sobre la ocasión, el ambiente, el menú ideal y cualquier otra información clave.',
+wu_desc_ph:'Ej: Cena romántica de aniversario, música suave, preferencia por mariscos, entrada, plato fuerte y postre...',
+wu_contact_q:'¡Ya está!',wu_contact_hint:'Ahora, sólo tienes que añadir tus datos de contacto y te enviaremos propuestas de menú personalizadas y gratuitas en menos de 20 minutos.',
+wu_name_ph:'Nombre *',wu_email_ph:'Email *',wu_phone_ph:'Teléfono *',
+wu_found_ph:'¿Cómo nos conociste?',wu_found_google:'Google',wu_found_instagram:'Instagram',wu_found_rec:'Recomendación',wu_found_airbnb:'Airbnb',wu_found_other:'Otro',
+wu_terms:'Acepto los <a href="terminos.html" target="_blank" style="color:var(--gold);text-decoration:underline">Términos y Condiciones</a> y la Declaración de privacidad',wu_terms_err:'Debés aceptar los términos para continuar',
+wu_prev:'Anterior',wu_next:'Siguiente',wu_cta:'Enviar solicitud',
+wu_footer:'&copy; 2026 David Suarez · Cocinero Privado',
+wu_subject:'Solicitud de Servicio Único - Evento Privado',
+wu_result_pax:{'2':'2 personas','3-6':'3 a 6 personas','7-10':'7 a 10 personas','11-15':'11 a 15 personas'},
+wu_occ_labels:{cumple:'Cumpleaños',familiar:'Reunión familiar',despedida:'Despedida de soltera/o',amigos:'Reunión con amigos',romantica:'Cena romántica',corp:'Evento corporativo'},
+wu_cuisine_labels:{local:'Local',italiana:'Italiana',mariscos:'Mariscos / Pescados',mexicana:'Mexicana'},
+wu_budget_labels:{casual:'Casual ($800-$1200/pp)',gourmet:'Gourmet ($1200-$1500/pp)',exclusive:'Exclusivo ($1500-$2000/pp)'},
+},
+en:{
+wu_label:'Single service',wu_title:'Budget for your event',wu_desc:'Answer step by step and get personalized menu proposals.',
+wu_occ_q:'What\'s the occasion?',wu_occ_err:'Select an occasion to continue',
+wu_occ_cumple:'Birthday',wu_occ_familiar:'Family gathering',wu_occ_despedida:'Bachelor/bachelorette party',wu_occ_amigos:'Gathering with friends',wu_occ_romantica:'Romantic dinner',wu_occ_corp:'Corporate event',
+wu_loc_q:'Where will the event be?',wu_loc_hint:'Enter city or full address',wu_loc_ph:'E.g.: Playa del Carmen, Quintana Roo',
+wu_pax_q:'How many people?',wu_pax_hint:'The chef\'s fee is fixed, so the price per person varies by group size.',
+wu_pax_2:'2 people',wu_pax_3_6:'3 to 6',wu_pax_7_10:'7 to 10',wu_pax_11_15:'11 to 15',wu_pax_change:'Not sure? You can change it later! 😉',
+wu_time_q:'What time?',wu_time_lunch:'Lunch',wu_time_dinner:'Dinner',
+wu_cuisine_q:'What do you fancy?',wu_cuisine_hint:'Need inspiration? Try the chef\'s special.',wu_cuisine_err:'Select a cuisine type to continue',
+wu_cuisine_local:'Local',wu_cuisine_italiana:'Italian',wu_cuisine_mariscos:'Seafood / Fish',wu_cuisine_mexicana:'Mexican',
+wu_date_q:'When?',wu_date_change:'Not sure? You can change it later! 😉',
+wu_budget_q:'What\'s your budget for this experience?',wu_budget_hint:'Prices vary by chef experience and menu complexity. Pick the one that suits you!',
+wu_budget_casual:'Casual',wu_budget_casual_sub:'Bond over good food · $800 - $1200 per person',
+wu_budget_gourmet:'Gourmet',wu_budget_gourmet_sub:'Brilliant menus to impress your guests · $1200 - $1500 per person',
+wu_budget_exclusive:'Exclusive selection',wu_budget_exclusive_sub:'The best of the best for your event · $1500 - $2000 per person',
+wu_restrict_q:'Any dietary restrictions?',wu_restrict_hint:'Need to check with guests? No problem. You can inform your chef later.',
+wu_restrict_no:'None',wu_restrict_si:'Yes',
+wu_restrict_detail_hint:'Select all that apply. Our chefs will create personalized menus adapted to your needs.',
+wu_restrict_veg:'Vegetarian',wu_restrict_seafood:'Seafood',wu_restrict_gluten:'Gluten',wu_restrict_dairy:'Dairy',wu_restrict_nuts:'Nuts',
+wu_restrict_other_ph:'Other restrictions...',
+wu_restrict_change:'Not sure? You can change it later! 😉',
+wu_desc_q:'Lastly, describe your event to your chef',wu_desc_hint:'Share details about the occasion, atmosphere, ideal menu and any key information.',
+wu_desc_ph:'E.g.: Romantic anniversary dinner, soft music, seafood preference, starter, main and dessert...',
+wu_contact_q:'You\'re all set!',wu_contact_hint:'Just add your contact details and we\'ll send you personalized menu proposals within 20 minutes.',
+wu_name_ph:'Name *',wu_email_ph:'Email *',wu_phone_ph:'Phone *',
+wu_found_ph:'How did you find us?',wu_found_google:'Google',wu_found_instagram:'Instagram',wu_found_rec:'Recommendation',wu_found_airbnb:'Airbnb',wu_found_other:'Other',
+wu_terms:'I accept the <a href="terminos.html" target="_blank" style="color:var(--gold);text-decoration:underline">Terms and Conditions</a> and the Privacy Statement',wu_terms_err:'You must accept the terms to continue',
+wu_prev:'Previous',wu_next:'Next',wu_cta:'Send request',
+wu_footer:'&copy; 2026 David Suarez · Private Chef',
+wu_subject:'Single Service Request - Private Event',
+wu_result_pax:{'2':'2 people','3-6':'3 to 6 people','7-10':'7 to 10 people','11-15':'11 to 15 people'},
+wu_occ_labels:{cumple:'Birthday',familiar:'Family gathering',despedida:'Bachelor/bachelorette party',amigos:'Gathering with friends',romantica:'Romantic dinner',corp:'Corporate event'},
+wu_cuisine_labels:{local:'Local',italiana:'Italian',mariscos:'Seafood / Fish',mexicana:'Mexican'},
+wu_budget_labels:{casual:'Casual ($800-$1200/pp)',gourmet:'Gourmet ($1200-$1500/pp)',exclusive:'Exclusive ($1500-$2000/pp)'},
+}
+};
+
+function getLang(){return currentLang;}
+
+function buildProgress(){
+const p=document.getElementById('wizProgress');p.innerHTML='';
+for(let i=0;i<TOTAL_STEPS;i++){
+const d=document.createElement('div');d.className='wiz-dot'+(i===0?' active':'');d.dataset.step=i;d.textContent=i+1;p.appendChild(d);
+if(i<TOTAL_STEPS-1){const l=document.createElement('div');l.className='wiz-line';p.appendChild(l);}
+}
+}
+
+function updateProgress(n){
+document.querySelectorAll('.wiz-dot').forEach((el,i)=>{el.classList.toggle('active',i===n);el.classList.toggle('done',i<n);});
+document.querySelectorAll('.wiz-line').forEach((el,i)=>{el.classList.toggle('done',i<n);});
+}
+
+function selectWiz(el,field){
+const parent=el.parentElement;
+parent.querySelectorAll('.wiz-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');
+if(field==='occasion')wizData.occasion=el.dataset.value;
+else if(field==='pax')wizData.pax=el.dataset.value;
+else if(field==='time')wizData.time=el.dataset.value;
+else if(field==='cuisine')wizData.cuisine=el.dataset.value;
+else if(field==='budget')wizData.budget=el.dataset.value;
+}
+
+function showRestrictDetail(show){
+document.getElementById('restrictDetail').style.display=show?'block':'none';
+document.getElementById('restrictNo').classList.toggle('selected',!show);
+document.getElementById('restrictSi').classList.toggle('selected',show);
+wizData.hasRestrictions=show;
+}
+
+function toggleRestrict(el){
+el.classList.toggle('selected');
+const val=el.dataset.value;
+if(el.classList.contains('selected')){if(!wizRestrictions.includes(val))wizRestrictions.push(val);}
+else{wizRestrictions=wizRestrictions.filter(v=>v!==val);}
+}
+
+function calRender(){
+const m=calMonthIdx;const y=calYear;
+const months_es=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const months_en=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const days_es=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const days_en=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const l=getLang();
+const months=l==='es'?months_es:months_en;
+const days=l==='es'?days_es:days_en;
+document.getElementById('calMonthLabel').textContent=months[m]+' '+y;
+const grid=document.getElementById('calGrid');
+grid.innerHTML='';
+days.forEach(d=>{const div=document.createElement('div');div.className='cal-day';div.textContent=d;grid.appendChild(div);});
+const first=new Date(y,m,1).getDay();
+const daysInM=new Date(y,m+1,0).getDate();
+const today=new Date();
+for(let i=0;i<first;i++){const div=document.createElement('div');div.className='cal-num empty';grid.appendChild(div);}
+for(let d=1;d<=daysInM;d++){
+const div=document.createElement('div');div.className='cal-num';
+if(d===today.getDate()&&m===today.getMonth()&&y===today.getFullYear())div.classList.add('today');
+if(wizData.date===y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'))div.classList.add('selected');
+div.textContent=d;
+div.onclick=function(){document.querySelectorAll('.cal-num').forEach(el=>el.classList.remove('selected'));this.classList.add('selected');wizData.date=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');};
+grid.appendChild(div);
+}
+}
+
+function calMonth(dir){
+calMonthIdx+=dir;
+if(calMonthIdx>11){calMonthIdx=0;calYear++;}
+if(calMonthIdx<0){calMonthIdx=11;calYear--;}
+calRender();
+}
+
+function showWizStep(n){
+wizStep=n;updateProgress(n);
+document.querySelectorAll('.wiz-step').forEach((el,i)=>el.classList.toggle('active',i===n));
+const l=getLang();const cfg=lang[l];
+const wp=document.getElementById('wizPrev');const wn=document.getElementById('wizNext');
+wp.style.display=n===0?'none':'inline-flex';wp.textContent=cfg.wu_prev;
+wn.textContent=cfg.wu_next;wn.onclick=wizNext;
+if(n===TOTAL_STEPS-1)wn.textContent=l==='es'?'Enviar solicitud':'Send request';
+document.getElementById('calcResult').style.display='none';
+if(n===5)calRender();
+}
+
+function wizPrev(){if(wizStep>0)showWizStep(wizStep-1);}
+function wizNext(){
+document.querySelectorAll('.wiz-input,.wiz-select').forEach(el=>el.classList.remove('invalid'));
+document.querySelectorAll('.wiz-err').forEach(el=>el.classList.remove('show'));
+if(wizStep===0&&!wizData.occasion){
+document.getElementById('wuOccErr').classList.add('show');return;}
+if(wizStep===1&&!document.getElementById('wuLoc').value.trim()){
+document.getElementById('wuLoc').classList.add('invalid');return;}
+if(wizStep===4&&!wizData.cuisine){
+document.getElementById('wuCuisineErr').classList.add('show');return;}
+if(wizStep===9){
+let valid=true;
+if(!document.getElementById('wuName').value.trim()){document.getElementById('wuName').classList.add('invalid');valid=false;}
+if(!document.getElementById('wuEmail').value.trim()||!document.getElementById('wuEmail').value.includes('@')){document.getElementById('wuEmail').classList.add('invalid');valid=false;}
+if(!document.getElementById('wuPhone').value.trim()){document.getElementById('wuPhone').classList.add('invalid');valid=false;}
+if(!document.getElementById('wuTerms').checked){document.getElementById('wuTermsErr').classList.add('show');valid=false;}
+if(!valid)return;
+showCalcResult();return;}
+if(wizStep<TOTAL_STEPS-1)showWizStep(wizStep+1);}
+
+function showCalcResult(){
+const l=getLang();const cfg=lang[l];
+wizData.location=document.getElementById('wuLoc').value;
+wizData.restrictOther=document.getElementById('wuRestrictOther').value;
+wizData.description=document.getElementById('wuDesc').value;
+wizData.name=document.getElementById('wuName').value;
+wizData.email=document.getElementById('wuEmail').value;
+wizData.phone=document.getElementById('wuPhone').value;
+wizData.phonePrefix=document.getElementById('wuPhonePrefix').value;
+wizData.howFound=document.getElementById('wuFound').value;
+wizData.terms=document.getElementById('wuTerms').checked;
+wizData.restrictions=wizRestrictions;
+// Calc price
+const paxRanges={2:1,'3-6':1.2,'7-10':1,'11-15':0.85};
+const base=wizData.budget==='casual'?1000:wizData.budget==='gourmet'?1350:1750;
+let paxNum=wizData.pax;
+if(paxNum==='3-6')paxNum=4;else if(paxNum==='7-10')paxNum=8;else if(paxNum==='11-15')paxNum=12;else paxNum=parseInt(paxNum);
+const total=base*paxNum;
+document.getElementById('calcPrice').textContent='$'+total+' USD';
+let note='';
+if(wizData.occasion)note+=cfg.wu_occ_labels[wizData.occasion]+' · ';
+note+=(wizData.pax in cfg.wu_result_pax?cfg.wu_result_pax[wizData.pax]:wizData.pax+' '+(l==='es'?'personas':'people'));
+document.getElementById('calcNote').textContent=note;
+let detail='';
+if(wizData.cuisine)detail+=cfg.wu_cuisine_labels[wizData.cuisine];
+if(wizData.date)detail+=' · '+wizData.date;
+if(wizData.budget)detail+=' · '+cfg.wu_budget_labels[wizData.budget];
+document.getElementById('calcDetail').textContent=detail;
+document.getElementById('calcResult').style.display='block';
+document.getElementById('calcResult').scrollIntoView({behavior:'smooth',block:'center'});
+// Mailto
+const cta=document.getElementById('calcCTA');
+let body=l==='es'?'Hola David, quiero solicitar un servicio único:\n\n':'Hi David, I want to request a single service:\n\n';
+if(wizData.occasion)body+=(l==='es'?'Ocasión: ':'Occasion: ')+cfg.wu_occ_labels[wizData.occasion]+'\n';
+if(wizData.location)body+=(l==='es'?'Ubicación: ':'Location: ')+wizData.location+'\n';
+body+=(l==='es'?'Personas: ':'Guests: ')+(wizData.pax in cfg.wu_result_pax?cfg.wu_result_pax[wizData.pax]:wizData.pax)+'\n';
+body+=(l==='es'?'Horario: ':'Time: ')+(wizData.time==='comida'?(l==='es'?'Comida':'Lunch'):(l==='es'?'Cena':'Dinner'))+'\n';
+if(wizData.cuisine)body+=(l==='es'?'Cocina: ':'Cuisine: ')+cfg.wu_cuisine_labels[wizData.cuisine]+'\n';
+if(wizData.date)body+=(l==='es'?'Fecha: ':'Date: ')+wizData.date+'\n';
+body+=(l==='es'?'Presupuesto: ':'Budget: ')+cfg.wu_budget_labels[wizData.budget]+'\n';
+if(wizData.hasRestrictions&&wizRestrictions.length){
+const rLabels=l==='es'?{vegetarian:'Vegetariano',mariscos:'Mariscos',gluten:'Gluten',lacteos:'Lácteos',nuts:'Frutos secos'}:{vegetarian:'Vegetarian',mariscos:'Seafood',gluten:'Gluten',lacteos:'Dairy',nuts:'Nuts'};
+body+=(l==='es'?'Restricciones: ':'Restrictions: ')+wizRestrictions.map(r=>rLabels[r]||r).join(', ')+'\n';
+}
+if(wizData.restrictOther)body+=(l==='es'?'Otras restricciones: ':'Other restrictions: ')+wizData.restrictOther+'\n';
+if(wizData.description)body+=(l==='es'?'Descripción: ':'Description: ')+wizData.description+'\n';
+body+=(l==='es'?'\nContacto:\n':'Contact:\n');
+body+=(l==='es'?'Nombre: ':'Name: ')+wizData.name+'\nEmail: '+wizData.email+'\n';
+body+=(l==='es'?'Tel: ':'Phone: ')+wizData.phonePrefix+' '+wizData.phone+'\n';
+if(wizData.howFound)body+=(l==='es'?'Cómo nos conoció: ':'How found: ')+wizData.howFound;
+cta.href='mailto:hola@davidsuarezchef.com?subject='+encodeURIComponent(cfg.wu_subject)+'&body='+encodeURIComponent(body);
+}
+
+function toggleLang(){
+const btn=document.getElementById('langToggle');
+currentLang=currentLang==='es'?'en':'es';
+btn.textContent=currentLang==='es'?'EN':'ES';
+const t=lang[currentLang];
+document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(t[k])el.innerHTML=t[k];});
+document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const k=el.dataset.i18nPlaceholder;if(t[k])el.placeholder=t[k];});
+const wn=document.getElementById('wizNext');const wp=document.getElementById('wizPrev');
+if(wp)wp.textContent=t.wu_prev;
+if(wn){wn.textContent=wizStep===TOTAL_STEPS-1?(currentLang==='es'?'Enviar solicitud':'Send request'):t.wu_next;}
+if(wizStep===5)calRender();
+}
+
+buildProgress();showWizStep(0);
+</script>
+</body>
+</html>

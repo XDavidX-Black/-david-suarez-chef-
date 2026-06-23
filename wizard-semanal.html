@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comidas Semanales · David Suarez Chef</title>
+<meta name="description" content="Servicio de comidas semanales a domicilio. Un chef privado cocina en tu casa una vez por semana y deja todo listo para varios días.">
+<meta name="theme-color" content="#0a0a0a">
+<style>
+:root{--gold:#e8c45a;--bg:#0a0a0a;--bg2:#111;--card:#151515;--text:#ede8e0;--text2:#706860;--border:rgba(232,196,90,0.1);--transition:0.4s ease}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+header{padding:18px 0;background:rgba(10,10,10,0.95);border-bottom:1px solid var(--border)}
+header .container{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;align-items:center}
+header a{color:var(--text2);text-decoration:none;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;transition:color .3s}
+header a:hover{color:var(--gold)}
+.lang-toggle{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:inherit;line-height:1}
+.lang-toggle:hover{color:var(--gold);border-color:var(--gold)}
+.wiz-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:680px;margin:0 auto;padding:60px 28px;width:100%}
+.wiz-header{text-align:center;margin-bottom:40px}
+.wiz-header .section-label{font-size:.55rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.wiz-header h2{font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;letter-spacing:2px;margin-bottom:6px}
+.wiz-header p{color:var(--text2);font-size:.8rem;max-width:440px;margin:0 auto}
+.wiz-progress{display:flex;justify-content:center;gap:4px;margin-bottom:40px;align-items:center}
+.wiz-dot{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.5rem;color:var(--text2);transition:all .3s;font-family:'Georgia',serif;background:transparent;flex-shrink:0}
+.wiz-dot.active{background:var(--gold);color:#080808;border-color:var(--gold)}
+.wiz-dot.done{background:rgba(232,196,90,0.12);border-color:var(--gold);color:var(--gold)}
+.wiz-line{width:16px;height:1px;background:var(--border);flex-shrink:0}
+.wiz-line.done{background:var(--gold)}
+.wiz-steps{position:relative}
+.wiz-step{display:none;animation:wizFade .35s ease;max-width:520px;margin:0 auto}
+.wiz-step.active{display:block}
+@keyframes wizFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.wiz-q{font-size:1rem;font-weight:300;letter-spacing:1.5px;text-align:center;margin-bottom:8px;line-height:1.4}
+.wiz-hint{font-size:.65rem;color:var(--text2);text-align:center;margin-bottom:24px;letter-spacing:1px}
+.wiz-opts{display:grid;gap:10px;margin:0 auto}
+.wiz-opts.cols-3{grid-template-columns:repeat(3,1fr);max-width:420px}
+.wiz-opts.cols-2{grid-template-columns:repeat(2,1fr);max-width:360px}
+.wiz-opts.cols-1{grid-template-columns:1fr;max-width:340px}
+.wiz-opt{background:var(--card);border:1px solid var(--border);padding:14px 10px;text-align:center;cursor:pointer;transition:all .3s;font-family:inherit;color:var(--text2);font-size:.72rem;letter-spacing:1.5px;line-height:1.3;border-radius:0}
+.wiz-opt:hover{border-color:var(--gold);color:var(--gold)}
+.wiz-opt.selected{background:rgba(232,196,90,0.08);border-color:var(--gold);color:var(--gold)}
+.wiz-opt .wiz-emoji{display:block;font-size:1.4rem;margin-bottom:4px;line-height:1}
+.wiz-opt .wiz-sub{display:block;font-size:.5rem;letter-spacing:1px;color:var(--text2);margin-top:3px;font-weight:300;text-transform:uppercase}
+.wiz-opt.selected .wiz-sub{color:var(--gold)}
+.wiz-input{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;color:var(--text);font:inherit;font-size:.82rem;width:100%;max-width:340px;display:block;margin:0 auto 12px;transition:border .3s}
+.wiz-input:focus{outline:none;border-color:var(--gold)}
+.wiz-input.invalid,.wiz-select.invalid{border-color:#c0392b;box-shadow:0 0 0 1px rgba(192,57,43,0.3)}
+.wiz-err{color:#c0392b;font-size:.55rem;letter-spacing:1px;text-align:center;margin:-6px 0 8px;display:none}
+.wiz-err.show{display:block}
+.wiz-select{background:var(--bg2);border:1px solid var(--border);padding:13px 16px;color:var(--text);font:inherit;font-size:.78rem;width:100%;max-width:280px;cursor:pointer;display:block;margin:0 auto 12px;transition:border .3s}
+.wiz-select:focus{outline:none;border-color:var(--gold)}
+.wiz-select option{background:var(--bg)}
+.wiz-textarea{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;color:var(--text);font:inherit;font-size:.78rem;width:100%;max-width:420px;min-height:80px;resize:vertical;display:block;margin:0 auto;font-family:inherit;transition:border .3s}
+.wiz-textarea:focus{outline:none;border-color:var(--gold)}
+.wiz-check-wrap{text-align:center;margin:16px auto;max-width:420px}
+.wiz-check-wrap label{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:.8rem;color:var(--text2)}
+.wiz-check-wrap input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer}
+.wiz-info-box{background:var(--card);border:1px solid var(--border);padding:24px;margin:0 auto 24px;max-width:480px;text-align:left;line-height:1.8}
+.wiz-info-box p{color:var(--text2);font-size:.78rem;margin-bottom:10px}
+.wiz-info-box p:last-child{margin-bottom:0}
+.wiz-info-box strong{color:var(--gold)}
+.wiz-nav{display:flex;justify-content:space-between;gap:14px;margin-top:36px;max-width:400px;margin-left:auto;margin-right:auto}
+.wiz-nav .btn{padding:14px 32px;min-width:120px;justify-content:center;font-size:.55rem;display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#080808;text-decoration:none;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+.wiz-nav .btn:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+.wiz-nav .btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.wiz-nav .btn-outline:hover{background:var(--gold);color:#080808}
+.wiz-radio-group{display:flex;gap:10px;justify-content:center;max-width:400px;margin:0 auto 16px}
+.wiz-radio-group label{flex:1;background:var(--card);border:1px solid var(--border);padding:14px 10px;text-align:center;cursor:pointer;transition:all .3s;font-size:.72rem;letter-spacing:1.5px;color:var(--text2)}
+.wiz-radio-group label:hover{border-color:var(--gold);color:var(--gold)}
+.wiz-radio-group input[type=radio]{display:none}
+.wiz-radio-group input[type=radio]:checked+span{color:var(--gold)}
+.wiz-radio-group input[type=radio]:checked~.wiz-radio-bg{background:rgba(232,196,90,0.08);border-color:var(--gold);color:var(--gold)}
+.wiz-radio-group label:has(input:checked){background:rgba(232,196,90,0.08);border-color:var(--gold);color:var(--gold)}
+#calcResult{display:none;text-align:center;padding:32px;border:1px solid var(--border);max-width:480px;margin:28px auto 0;animation:wizFade .4s ease}
+#calcResult .calc-price{font-size:clamp(2rem,4vw,3rem);color:var(--gold);font-weight:300;letter-spacing:2px;margin-bottom:6px}
+#calcResult .calc-note{font-size:.72rem;color:var(--text2);margin-bottom:6px;line-height:1.6}
+#calcResult .calc-detail{font-size:.6rem;color:var(--text2);letter-spacing:1px;margin-bottom:20px}
+#calcResult .btn{margin-top:6px;display:inline-flex;align-items:center;gap:8px;padding:16px 44px;background:var(--gold);color:#080808;text-decoration:none;letter-spacing:3px;text-transform:uppercase;font-size:.6rem;border:none;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+#calcResult .btn:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+footer{padding:30px 0;text-align:center;border-top:1px solid var(--border);margin-top:auto}
+footer p{font-size:.6rem;color:var(--text2);letter-spacing:2px}
+footer a{color:var(--gold);text-decoration:none}
+@media(max-width:600px){
+.wiz-wrap{padding:40px 16px}
+.wiz-opts.cols-3{grid-template-columns:repeat(2,1fr);max-width:300px}
+.wiz-dot{width:24px;height:24px;font-size:.45rem}
+.wiz-nav{flex-direction:column;max-width:280px}
+.wiz-nav .btn{width:100%;justify-content:center}
+.wiz-progress{gap:2px}
+.wiz-line{width:10px}
+.wiz-radio-group{flex-direction:column;max-width:280px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<a href="durable-copy.html">← Volver al inicio</a>
+<button class="lang-toggle" onclick="toggleLang()" id="langToggle" data-lang="es">EN</button>
+</div>
+</header>
+
+<div class="wiz-wrap">
+
+<div class="wiz-header">
+<p class="section-label" data-i18n="ws_label">Comidas semanales</p>
+<h2 data-i18n="ws_title">Cocina semanal a domicilio</h2>
+<p data-i18n="ws_desc">Un chef privado cocina en tu casa una vez por semana y deja todo listo para varios días. Respondé y te enviamos una propuesta.</p>
+</div>
+
+<div class="wiz-progress" id="wizProgress"></div>
+
+<div class="wiz-steps" id="wizSteps">
+
+<!-- Step 1: Location -->
+<div class="wiz-step active" data-step="0">
+<p class="wiz-q" data-i18n="ws_loc_q">¿Dónde te encuentras?</p>
+<p class="wiz-hint" data-i18n="ws_loc_hint">Necesitamos saber tu ubicación para confirmar cobertura</p>
+<div style="max-width:340px;margin:0 auto">
+<input type="text" id="wsCity" class="wiz-input" placeholder="Ciudad*" data-i18n-placeholder="ws_city_ph" required>
+<input type="text" id="wsPlace" class="wiz-input" placeholder="¿Dónde tendrá lugar el servicio?*" data-i18n-placeholder="ws_place_ph" required>
+<input type="text" id="wsCountry" class="wiz-input" placeholder="País*" data-i18n-placeholder="ws_country_ph" required>
+<input type="text" id="wsZip" class="wiz-input" placeholder="Código Postal*" data-i18n-placeholder="ws_zip_ph" required>
+</div>
+</div>
+
+<!-- Step 2: How it works + Agreement -->
+<div class="wiz-step" data-step="1">
+<p class="wiz-q" data-i18n="ws_how_q">¿Cómo funciona?</p>
+<div class="wiz-info-box">
+<p data-i18n="ws_how_desc1">Un chef profesional acudirá a tu domicilio una vez por semana y preparará múltiples comidas en una sola sesión, dejando todo organizado para varios días.</p>
+<p data-i18n="ws_how_desc2">Las sesiones suelen durar entre <strong>3 y 5 horas</strong> dependiendo del tamaño del servicio y el precio va desde <strong>$300 USD</strong> o su equivalente en moneda local.</p>
+</div>
+<div class="wiz-check-wrap">
+<label><input type="checkbox" id="wsAgree"> <span data-i18n="ws_agree"></span></label>
+<p class="wiz-err" id="wsAgreeErr" data-i18n="ws_agree_err">Debés aceptar los términos para continuar</p>
+</div>
+</div>
+
+<!-- Step 3: Meals per week + People -->
+<div class="wiz-step" data-step="2">
+<p class="wiz-q" data-i18n="ws_meals_q">¿Cuántas comidas quieres que el chef prepare cada semana?</p>
+<div class="wiz-opts cols-3">
+<button class="wiz-opt selected" data-value="4" onclick="selectWiz(this,'meals')">4</button>
+<button class="wiz-opt" data-value="6" onclick="selectWiz(this,'meals')">6</button>
+<button class="wiz-opt" data-value="8" onclick="selectWiz(this,'meals')">8</button>
+<button class="wiz-opt" data-value="10" onclick="selectWiz(this,'meals')">10</button>
+<button class="wiz-opt" data-value="12" onclick="selectWiz(this,'meals')">12</button>
+<button class="wiz-opt" data-value="14" onclick="selectWiz(this,'meals')">14</button>
+</div>
+<p class="wiz-err" id="wsMealsErr" data-i18n="ws_meals_err">Seleccioná cuántas comidas por semana</p>
+<p class="wiz-q" style="margin-top:20px" data-i18n="ws_pax_q">¿Para cuántas personas?</p>
+<div class="wiz-opts cols-3" style="max-width:360px">
+<button class="wiz-opt" data-value="1" onclick="selectWiz(this,'people')">1</button>
+<button class="wiz-opt selected" data-value="2" onclick="selectWiz(this,'people')">2</button>
+<button class="wiz-opt" data-value="3" onclick="selectWiz(this,'people')">3</button>
+<button class="wiz-opt" data-value="4" onclick="selectWiz(this,'people')">4</button>
+<button class="wiz-opt" data-value="5" onclick="selectWiz(this,'people')">5</button>
+<button class="wiz-opt" data-value="6" onclick="selectWiz(this,'people')">6+</button>
+</div>
+</div>
+
+<!-- Step 4: Allergies + Preferences + Start -->
+<div class="wiz-step" data-step="3">
+<p class="wiz-q" data-i18n="ws_restrict_q">Alergias Alimentarias o Restricciones Dietéticas</p>
+<div class="wiz-opts cols-3" style="max-width:420px">
+<button class="wiz-opt small-txt" data-value="gluten" onclick="toggleMulti(this)"><span data-i18n="ws_restrict_gluten">Gluten</span></button>
+<button class="wiz-opt small-txt" data-value="nuts" onclick="toggleMulti(this)"><span data-i18n="ws_restrict_nuts">Frutos secos</span></button>
+<button class="wiz-opt small-txt" data-value="dairy" onclick="toggleMulti(this)"><span data-i18n="ws_restrict_dairy">Lácteos</span></button>
+<button class="wiz-opt small-txt" data-value="seafood" onclick="toggleMulti(this)"><span data-i18n="ws_restrict_seafood">Mariscos</span></button>
+<button class="wiz-opt small-txt" data-value="vegetarian" onclick="toggleMulti(this)"><span data-i18n="ws_restrict_veg">Vegetariana</span></button>
+<button class="wiz-opt small-txt" data-value="vegan" onclick="toggleMulti(this)"><span data-i18n="ws_restrict_vegan">Vegana</span></button>
+</div>
+<p class="wiz-q" style="font-size:.85rem;margin-top:20px" data-i18n="ws_prefs_q">Preferencias Culinarias y Notas Adicionales</p>
+<p class="wiz-hint" data-i18n="ws_prefs_hint">Cuéntanos un poco más sobre tus preferencias culinarias, objetivos alimenticios o cualquier detalle</p>
+<textarea id="wsPrefs" class="wiz-textarea" placeholder="Ej: comida italiana, bajo en carbohidratos, sin picante..." data-i18n-placeholder="ws_prefs_ph"></textarea>
+<p class="wiz-q" style="font-size:.85rem;margin-top:20px" data-i18n="ws_shop_q">¿Te gustaría que el chef se encargara de comprar los ingredientes?</p>
+<div class="wiz-radio-group">
+<label><input type="radio" name="wsShop" value="si" checked> <span data-i18n="ws_shop_si">Sí</span></label>
+<label><input type="radio" name="wsShop" value="no"> <span data-i18n="ws_shop_no">No</span></label>
+<label><input type="radio" name="wsShop" value="unsure"> <span data-i18n="ws_shop_unsure">No estoy seguro/a</span></label>
+</div>
+<p class="wiz-q" style="font-size:.85rem;margin-top:20px" data-i18n="ws_date_q">Fecha ideal de inicio</p>
+<input type="date" id="wsStartDate" class="wiz-input" min="2026-07-01" style="max-width:260px">
+<p class="wiz-q" style="font-size:.85rem;margin-top:16px" data-i18n="ws_day_q">Día preferido para la sesión</p>
+<p class="wiz-hint" data-i18n="ws_day_hint">¿Qué día prefieres que el chef vaya a cocinar? Ej: Lunes, Martes o Miércoles</p>
+<input type="text" id="wsDay" class="wiz-input" placeholder="Ej: Lunes" data-i18n-placeholder="ws_day_ph" style="max-width:260px">
+</div>
+
+<!-- Step 5: Contact -->
+<div class="wiz-step" data-step="4">
+<p class="wiz-q" data-i18n="ws_contact_q">Tus datos para recibir la propuesta</p>
+<p class="wiz-hint" data-i18n="ws_contact_hint">Te enviaremos una propuesta personalizada sin compromiso</p>
+<div style="max-width:320px;margin:0 auto">
+<input type="text" id="wsName" class="wiz-input" placeholder="Nombre*" data-i18n-placeholder="ws_name_ph" required>
+<input type="email" id="wsEmail" class="wiz-input" placeholder="Email*" data-i18n-placeholder="ws_email_ph" required>
+<div style="display:flex;gap:8px;align-items:center;max-width:340px;margin:0 auto 12px">
+<select id="wsPhonePrefix" class="wiz-select" style="max-width:80px;margin:0;flex-shrink:0">
+<option value="+52">🇲🇽 +52</option>
+<option value="+1">🇺🇸 +1</option>
+<option value="+34">🇪🇸 +34</option>
+<option value="+44">🇬🇧 +44</option>
+</select>
+<input type="tel" id="wsPhone" class="wiz-input" placeholder="Número de teléfono*" data-i18n-placeholder="ws_phone_ph" style="margin:0;flex:1">
+</div>
+</div>
+</div>
+
+</div><!-- /wiz-steps -->
+
+<div class="wiz-nav">
+<button class="btn btn-outline" id="wizPrev" onclick="wizPrev()" data-i18n="ws_prev">Anterior</button>
+<button class="btn" id="wizNext" onclick="wizNext()" data-i18n="ws_next">Siguiente</button>
+</div>
+
+<div id="calcResult">
+<div class="calc-price" id="calcPrice">$0 USD</div>
+<div class="calc-note" id="calcNote"></div>
+<div class="calc-detail" id="calcDetail"></div>
+<a href="#" class="btn" id="calcCTA" data-i18n="ws_cta">Enviar solicitud</a>
+</div>
+
+</div><!-- /wiz-wrap -->
+
+<footer>
+<p data-i18n="ws_footer">&copy; 2026 David Suarez · Cocinero Privado</p>
+<p style="margin-top:6px"><a href="terminos.html" style="color:var(--gold);text-decoration:none;font-size:.5rem;letter-spacing:2px;text-transform:uppercase">Términos y Condiciones</a></p>
+</footer>
+
+<script>
+const TOTAL_STEPS=5;
+let currentLang='es';
+let wizStep=0;
+let wizRestrictions=[];
+
+const lang={
+es:{
+ws_label:'Comidas semanales',ws_title:'Cocina semanal a domicilio',ws_desc:'Un chef privado cocina en tu casa una vez por semana y deja todo listo para varios días. Respondé y te enviamos una propuesta.',
+ws_loc_q:'¿Dónde te encuentras?',ws_loc_hint:'Necesitamos saber tu ubicación para confirmar cobertura',
+ws_city_ph:'Ciudad*',ws_place_ph:'¿Dónde tendrá lugar el servicio?*',ws_country_ph:'País*',ws_zip_ph:'Código Postal*',
+ws_how_q:'¿Cómo funciona?',
+ws_how_desc1:'Un chef profesional acudirá a tu domicilio una vez por semana y preparará múltiples comidas en una sola sesión, dejando todo organizado para varios días.',
+ws_how_desc2:'Las sesiones suelen durar entre <strong>3 y 5 horas</strong> dependiendo del tamaño del servicio y el precio va desde <strong>$300 USD</strong> o su equivalente en moneda local.',
+ws_agree:'Estoy de acuerdo con los <a href="terminos.html" target="_blank" style="color:var(--gold);text-decoration:underline">términos del servicio</a>',ws_agree_err:'Debés aceptar los términos para continuar',ws_meals_err:'Seleccioná cuántas comidas por semana',
+ws_meals_q:'¿Cuántas comidas quieres que el chef prepare cada semana?',ws_pax_q:'¿Para cuántas personas?',
+ws_restrict_q:'Alergias Alimentarias o Restricciones Dietéticas',
+ws_restrict_gluten:'Gluten',ws_restrict_nuts:'Frutos secos',ws_restrict_dairy:'Lácteos',ws_restrict_seafood:'Mariscos',ws_restrict_veg:'Vegetariana',ws_restrict_vegan:'Vegana',
+ws_prefs_q:'Preferencias Culinarias y Notas Adicionales',ws_prefs_hint:'Cuéntanos un poco más sobre tus preferencias culinarias, objetivos alimenticios o cualquier detalle',
+ws_prefs_ph:'Ej: comida italiana, bajo en carbohidratos, sin picante...',
+ws_shop_q:'¿Te gustaría que el chef se encargara de comprar los ingredientes?',ws_shop_si:'Sí',ws_shop_no:'No',ws_shop_unsure:'No estoy seguro/a',
+ws_date_q:'Fecha ideal de inicio',ws_day_q:'Día preferido para la sesión',ws_day_hint:'¿Qué día prefieres que el chef vaya a cocinar? Ej: Lunes, Martes o Miércoles',ws_day_ph:'Ej: Lunes',
+ws_contact_q:'Tus datos para recibir la propuesta',ws_contact_hint:'Te enviaremos una propuesta personalizada sin compromiso',
+ws_name_ph:'Nombre*',ws_email_ph:'Email*',ws_phone_ph:'Número de teléfono*',
+ws_prev:'Anterior',ws_next:'Siguiente',ws_cta:'Enviar solicitud',ws_footer:'&copy; 2026 David Suarez · Cocinero Privado',
+ws_result_title:'Resumen de tu solicitud',ws_result_pax:'personas',ws_result_meals:'comidas/semana',ws_result_shop_si:'Sí, que compre los ingredientes',ws_result_shop_no:'No, yo compro los ingredientes',ws_result_shop_unsure:'Por definir',
+ws_subject:'Solicitud de Comidas Semanales',
+ws_email_body_pre:'Hola David, quiero solicitar el servicio de comidas semanales:\n\n',
+ws_email_loc:'Ubicación: ',ws_email_city:'Ciudad: ',ws_email_place:'Lugar: ',ws_email_country:'País: ',ws_email_zip:'CP: ',
+ws_email_meals:'Comidas por semana: ',ws_email_pax:'Personas: ',
+ws_email_restrict:'Restricciones: ',ws_email_prefs:'Preferencias: ',ws_email_shop:'¿Compra ingredientes?: ',ws_email_start:'Fecha inicio: ',ws_email_day:'Día preferido: ',
+ws_email_contact:'\n\nContacto:\n',ws_email_name:'Nombre: ',ws_email_phone:'Tel: ',
+},
+en:{
+ws_label:'Weekly meals',ws_title:'Weekly home cooking',ws_desc:'A private chef cooks at your home once a week and preps everything for several days. Answer and we\'ll send you a proposal.',
+ws_loc_q:'Where are you?',ws_loc_hint:'We need your location to confirm coverage',
+ws_city_ph:'City*',ws_place_ph:'Where will the service take place?*',ws_country_ph:'Country*',ws_zip_ph:'Postal Code*',
+ws_how_q:'How it works?',
+ws_how_desc1:'A professional chef will come to your home once a week and prepare multiple meals in a single session, leaving everything organized for several days.',
+ws_how_desc2:'Sessions typically last <strong>3 to 5 hours</strong> depending on service size and pricing starts from <strong>$300 USD</strong> or equivalent in local currency.',
+ws_agree:'I agree with the <a href="terminos.html" target="_blank" style="color:var(--gold);text-decoration:underline">terms of service</a>',ws_agree_err:'You must accept the terms to continue',ws_meals_err:'Select how many meals per week',
+ws_meals_q:'How many meals per week?',ws_pax_q:'How many people?',
+ws_restrict_q:'Food Allergies or Dietary Restrictions',
+ws_restrict_gluten:'Gluten',ws_restrict_nuts:'Nuts',ws_restrict_dairy:'Dairy',ws_restrict_seafood:'Seafood',ws_restrict_veg:'Vegetarian',ws_restrict_vegan:'Vegan',
+ws_prefs_q:'Culinary Preferences & Additional Notes',ws_prefs_hint:'Tell us about your culinary preferences, dietary goals or any details',
+ws_prefs_ph:'E.g.: Italian food, low carb, no spicy...',
+ws_shop_q:'Would you like the chef to handle grocery shopping?',ws_shop_si:'Yes',ws_shop_no:'No',ws_shop_unsure:'Not sure',
+ws_date_q:'Ideal start date',ws_day_q:'Preferred session day',ws_day_hint:'What day should the chef come cook? E.g.: Monday, Tuesday or Wednesday',ws_day_ph:'E.g.: Monday',
+ws_contact_q:'Your details for the proposal',ws_contact_hint:'We\'ll send you a personalized proposal with no obligation',
+ws_name_ph:'Name*',ws_email_ph:'Email*',ws_phone_ph:'Phone number*',
+ws_prev:'Previous',ws_next:'Next',ws_cta:'Send request',ws_footer:'&copy; 2026 David Suarez · Private Chef',
+ws_result_title:'Your request summary',ws_result_pax:'people',ws_result_meals:'meals/week',ws_result_shop_si:'Yes, buy ingredients',ws_result_shop_no:'No, I buy ingredients',ws_result_shop_unsure:'TBD',
+ws_subject:'Weekly Meals Request',
+ws_email_body_pre:'Hi David, I want to request the weekly meals service:\n\n',
+ws_email_loc:'Location: ',ws_email_city:'City: ',ws_email_place:'Place: ',ws_email_country:'Country: ',ws_email_zip:'ZIP: ',
+ws_email_meals:'Meals/week: ',ws_email_pax:'People: ',
+ws_email_restrict:'Restrictions: ',ws_email_prefs:'Preferences: ',ws_email_shop:'Shop ingredients?: ',ws_email_start:'Start date: ',ws_email_day:'Preferred day: ',
+ws_email_contact:'\n\nContact:\n',ws_email_name:'Name: ',ws_email_phone:'Phone: ',
+}
+};
+
+function getLang(){return currentLang;}
+
+function buildProgress(){
+const p=document.getElementById('wizProgress');p.innerHTML='';
+for(let i=0;i<TOTAL_STEPS;i++){
+const d=document.createElement('div');d.className='wiz-dot'+(i===0?' active':'');d.dataset.step=i;d.textContent=i+1;p.appendChild(d);
+if(i<TOTAL_STEPS-1){const l=document.createElement('div');l.className='wiz-line';p.appendChild(l);}
+}
+}
+function updateProgress(n){
+document.querySelectorAll('.wiz-dot').forEach((el,i)=>{el.classList.toggle('active',i===n);el.classList.toggle('done',i<n);});
+document.querySelectorAll('.wiz-line').forEach((el,i)=>{el.classList.toggle('done',i<n);});
+}
+
+function showWizStep(n){
+wizStep=n;updateProgress(n);
+document.querySelectorAll('.wiz-step').forEach((el,i)=>el.classList.toggle('active',i===n));
+const l=getLang();const cfg=lang[l];
+const wp=document.getElementById('wizPrev');const wn=document.getElementById('wizNext');
+wp.style.display=n===0?'none':'inline-flex';wp.textContent=cfg.ws_prev;
+wn.textContent=cfg.ws_next;wn.onclick=wizNext;
+if(n===TOTAL_STEPS-1)wn.textContent=l==='es'?'Ver resumen':'View summary';
+document.getElementById('calcResult').style.display='none';
+}
+
+function wizPrev(){if(wizStep>0)showWizStep(wizStep-1);}
+function wizNext(){
+document.querySelectorAll('.wiz-input,.wiz-select').forEach(el=>el.classList.remove('invalid'));
+document.querySelectorAll('.wiz-err').forEach(el=>el.classList.remove('show'));
+if(wizStep===0){
+let valid=true;
+if(!document.getElementById('wsCity').value.trim()){document.getElementById('wsCity').classList.add('invalid');valid=false;}
+if(!document.getElementById('wsPlace').value.trim()){document.getElementById('wsPlace').classList.add('invalid');valid=false;}
+if(!document.getElementById('wsCountry').value.trim()){document.getElementById('wsCountry').classList.add('invalid');valid=false;}
+if(!document.getElementById('wsZip').value.trim()){document.getElementById('wsZip').classList.add('invalid');valid=false;}
+if(!valid)return;}
+if(wizStep===1&&!document.getElementById('wsAgree').checked){
+document.getElementById('wsAgreeErr').classList.add('show');return;}
+if(wizStep===2){
+const steps=document.querySelectorAll('.wiz-step');
+const btns=steps[2].querySelectorAll('.wiz-opt[onclick*="meals"]');
+let hasMeals=false;btns.forEach(b=>{if(b.classList.contains('selected'))hasMeals=true;});
+if(!hasMeals){document.getElementById('wsMealsErr').classList.add('show');return;}}
+if(wizStep===4){
+let valid=true;
+if(!document.getElementById('wsName').value.trim()){document.getElementById('wsName').classList.add('invalid');valid=false;}
+if(!document.getElementById('wsEmail').value.trim()||!document.getElementById('wsEmail').value.includes('@')){document.getElementById('wsEmail').classList.add('invalid');valid=false;}
+if(!document.getElementById('wsPhone').value.trim()){document.getElementById('wsPhone').classList.add('invalid');valid=false;}
+if(!valid)return;
+showCalcResult();return;}
+if(wizStep<TOTAL_STEPS-1)showWizStep(wizStep+1);}
+
+function selectWiz(el,field){
+const parent=el.parentElement;
+parent.querySelectorAll('.wiz-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');
+}
+
+function toggleMulti(el){
+const val=el.dataset.value;
+if(val==='none'){
+el.parentElement.querySelectorAll('.wiz-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');wizRestrictions=['none'];return;
+}
+el.classList.toggle('selected');
+let arr=wizRestrictions.filter(v=>v!=='none');
+if(el.classList.contains('selected')){if(!arr.includes(val))arr.push(val);}else{arr=arr.filter(v=>v!==val);}
+wizRestrictions=arr;
+const nb=el.parentElement.querySelector('[data-value="none"]');
+if(nb)nb.classList.remove('selected');
+}
+
+function showCalcResult(){
+const l=getLang();const cfg=lang[l];
+const city=document.getElementById('wsCity').value;
+const place=document.getElementById('wsPlace').value;
+const country=document.getElementById('wsCountry').value;
+const zip=document.getElementById('wsZip').value;
+const agree=document.getElementById('wsAgree').checked;
+const mealsEl=document.querySelector('#wizSteps .wiz-step[data-step="2"] .wiz-opts:first-child .wiz-opt.selected');
+const meals=mealsEl?parseInt(mealsEl.dataset.value):4;
+const paxEl=document.querySelector('#wizSteps .wiz-step[data-step="2"] .wiz-opts:last-child .wiz-opt.selected');
+const pax=paxEl?parseInt(paxEl.dataset.value):2;
+const prefs=document.getElementById('wsPrefs').value;
+const shopRadio=document.querySelector('input[name="wsShop"]:checked');
+const shop=shopRadio?shopRadio.value:'si';
+const startDate=document.getElementById('wsStartDate').value;
+const day=document.getElementById('wsDay').value;
+const name=document.getElementById('wsName').value;
+const email=document.getElementById('wsEmail').value;
+const phonePrefix=document.getElementById('wsPhonePrefix').value;
+const phone=document.getElementById('wsPhone').value;
+
+// Calculate estimate
+const basePerMeal={4:45,6:40,8:38,10:35,12:33,14:30};
+const bpm=basePerMeal[meals]||40;
+const weekly=bpm*pax;
+const monthly=weekly*4;
+document.getElementById('calcPrice').textContent='$'+monthly+' USD/mes (~$'+weekly+' USD/semana)';
+
+let note='';
+if(shop==='si'){const shopLabel=l==='es'?'Incluye compra de ingredientes':'Includes grocery shopping';note+=shopLabel+' · ';}
+if(wizRestrictions.length&&!wizRestrictions.includes('none')){note+=wizRestrictions.length+' '+(l==='es'?'restricciones':'restrictions')+' · ';}
+note+=meals+' '+(l==='es'?'comidas/semana':'meals/week')+' · '+pax+' '+(l==='es'?'personas':'people');
+document.getElementById('calcNote').textContent=note;
+
+let detail='';
+if(city)detail+=city;
+if(startDate)detail+=' · '+startDate;
+if(day)detail+=' · '+day;
+document.getElementById('calcDetail').textContent=detail;
+
+document.getElementById('calcResult').style.display='block';
+document.getElementById('calcResult').scrollIntoView({behavior:'smooth',block:'center'});
+
+// Build mailto
+const shopLabel=l==='es'?(shop==='si'?'Sí':'No'):(shop==='si'?'Yes':'No');
+if(shop==='unsure'){const u=l==='es'?'Por definir':'Not sure';}
+const subject=encodeURIComponent(cfg.ws_subject);
+let body=cfg.ws_email_body_pre;
+if(city)body+=cfg.ws_email_city+city+'\n';
+if(place)body+=cfg.ws_email_place+place+'\n';
+if(country)body+=cfg.ws_email_country+country+'\n';
+if(zip)body+=cfg.ws_email_zip+zip+'\n';
+body+='\n'+cfg.ws_email_meals+meals+'\n';
+body+=cfg.ws_email_pax+pax+'\n';
+if(wizRestrictions.length&&!wizRestrictions.includes('none')){
+const rLabels=l==='es'?{gluten:'Gluten',nuts:'Frutos secos',dairy:'Lácteos',seafood:'Mariscos',vegetarian:'Vegetariana',vegan:'Vegana'}:{gluten:'Gluten',nuts:'Nuts',dairy:'Dairy',seafood:'Seafood',vegetarian:'Vegetarian',vegan:'Vegan'};
+const rList=wizRestrictions.map(r=>rLabels[r]||r).join(', ');
+body+=cfg.ws_email_restrict+rList+'\n';
+}
+if(prefs)body+=cfg.ws_email_prefs+prefs+'\n';
+body+=cfg.ws_email_shop+(shop==='si'?cfg.ws_result_shop_si:shop==='no'?cfg.ws_result_shop_no:cfg.ws_result_shop_unsure)+'\n';
+if(startDate)body+=cfg.ws_email_start+startDate+'\n';
+if(day)body+=cfg.ws_email_day+day+'\n';
+body+=cfg.ws_email_contact;
+body+=cfg.ws_email_name+name+'\nEmail: '+email+'\n';
+body+=cfg.ws_email_phone+phonePrefix+' '+phone;
+
+const cta=document.getElementById('calcCTA');
+cta.href='mailto:hola@davidsuarezchef.com?subject='+encodeURIComponent(cfg.ws_subject)+'&body='+encodeURIComponent(body);
+}
+
+function toggleLang(){
+const btn=document.getElementById('langToggle');
+currentLang=currentLang==='es'?'en':'es';
+btn.textContent=currentLang==='es'?'EN':'ES';
+const t=lang[currentLang];
+document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(t[k])el.innerHTML=t[k];});
+document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const k=el.dataset.i18nPlaceholder;if(t[k])el.placeholder=t[k];});
+document.querySelectorAll('.wiz-info-box p')[1].innerHTML=t.ws_how_desc2||document.querySelectorAll('.wiz-info-box p')[1].innerHTML;
+const wn=document.getElementById('wizNext');const wp=document.getElementById('wizPrev');
+if(wp)wp.textContent=t.ws_prev;
+if(wn){wn.textContent=wizStep===TOTAL_STEPS-1?(currentLang==='es'?'Ver resumen':'View summary'):t.ws_next;}
+}
+
+buildProgress();showWizStep(0);
+</script>
+</body>
+</html>

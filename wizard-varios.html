@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varios Servicios · David Suarez Chef</title>
+<meta name="description" content="Presupuesto para múltiples servicios de chef privado durante tus vacaciones o eventos en Quintana Roo.">
+<meta name="theme-color" content="#0a0a0a">
+<style>
+:root{--gold:#e8c45a;--bg:#0a0a0a;--bg2:#111;--card:#151515;--text:#ede8e0;--text2:#706860;--border:rgba(232,196,90,0.1);--transition:0.4s ease}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+header{padding:18px 0;background:rgba(10,10,10,0.95);border-bottom:1px solid var(--border)}
+header .container{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;align-items:center}
+header a{color:var(--text2);text-decoration:none;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;transition:color .3s}
+header a:hover{color:var(--gold)}
+.lang-toggle{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:inherit;line-height:1}
+.lang-toggle:hover{color:var(--gold);border-color:var(--gold)}
+.wiz-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:680px;margin:0 auto;padding:60px 28px;width:100%}
+.wiz-header{text-align:center;margin-bottom:40px}
+.wiz-header .section-label{font-size:.55rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.wiz-header h2{font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;letter-spacing:2px;margin-bottom:6px}
+.wiz-header p{color:var(--text2);font-size:.8rem;max-width:440px;margin:0 auto}
+.wiz-progress{display:flex;justify-content:center;gap:4px;margin-bottom:40px;align-items:center}
+.wiz-dot{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.5rem;color:var(--text2);transition:all .3s;font-family:'Georgia',serif;background:transparent;flex-shrink:0}
+.wiz-dot.active{background:var(--gold);color:#080808;border-color:var(--gold)}
+.wiz-dot.done{background:rgba(232,196,90,0.12);border-color:var(--gold);color:var(--gold)}
+.wiz-line{width:16px;height:1px;background:var(--border);flex-shrink:0}
+.wiz-line.done{background:var(--gold)}
+.wiz-steps{position:relative}
+.wiz-step{display:none;animation:wizFade .35s ease;max-width:520px;margin:0 auto}
+.wiz-step.active{display:block}
+@keyframes wizFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.wiz-q{font-size:1rem;font-weight:300;letter-spacing:1.5px;text-align:center;margin-bottom:8px;line-height:1.4}
+.wiz-hint{font-size:.65rem;color:var(--text2);text-align:center;margin-bottom:24px;letter-spacing:1px}
+.wiz-opts{display:grid;gap:10px;margin:0 auto}
+.wiz-opts.cols-3{grid-template-columns:repeat(3,1fr);max-width:420px}
+.wiz-opts.cols-2{grid-template-columns:repeat(2,1fr);max-width:440px}
+.wiz-opts.cols-1{grid-template-columns:1fr;max-width:340px}
+.wiz-opt{background:var(--card);border:1px solid var(--border);padding:14px 10px;text-align:center;cursor:pointer;transition:all .3s;font-family:inherit;color:var(--text2);font-size:.72rem;letter-spacing:1.5px;line-height:1.3}
+.wiz-opt:hover{border-color:var(--gold);color:var(--gold)}
+.wiz-opt.selected{background:rgba(232,196,90,0.08);border-color:var(--gold);color:var(--gold)}
+.wiz-opt .wiz-emoji{display:block;font-size:1.4rem;margin-bottom:4px;line-height:1}
+.wiz-input{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;color:var(--text);font:inherit;font-size:.82rem;width:100%;max-width:340px;display:block;margin:0 auto 12px;transition:border .3s}
+.wiz-input:focus{outline:none;border-color:var(--gold)}
+.wiz-input.invalid,.wiz-select.invalid{border-color:#c0392b;box-shadow:0 0 0 1px rgba(192,57,43,0.3)}
+.wiz-err{color:#c0392b;font-size:.55rem;letter-spacing:1px;text-align:center;margin:-6px 0 8px;display:none}
+.wiz-err.show{display:block}
+.wiz-textarea{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;color:var(--text);font:inherit;font-size:.78rem;width:100%;max-width:420px;min-height:80px;resize:vertical;display:block;margin:0 auto;font-family:inherit;transition:border .3s}
+.wiz-textarea:focus{outline:none;border-color:var(--gold)}
+.wiz-nav{display:flex;justify-content:space-between;gap:14px;margin-top:36px;max-width:400px;margin-left:auto;margin-right:auto}
+.wiz-nav .btn{padding:14px 32px;min-width:120px;justify-content:center;font-size:.55rem;display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#080808;text-decoration:none;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+.wiz-nav .btn:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+.wiz-nav .btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.wiz-nav .btn-outline:hover{background:var(--gold);color:#080808}
+#wizPrev{display:none}
+#calcResult{display:none;text-align:center;padding:32px;border:1px solid var(--border);max-width:480px;margin:28px auto 0;animation:wizFade .4s ease}
+#calcResult .calc-price{font-size:clamp(2rem,4vw,3rem);color:var(--gold);font-weight:300;letter-spacing:2px;margin-bottom:6px}
+#calcResult .calc-note{font-size:.72rem;color:var(--text2);margin-bottom:6px;line-height:1.6}
+#calcResult .calc-detail{font-size:.6rem;color:var(--text2);letter-spacing:1px;margin-bottom:20px}
+#calcResult .btn{margin-top:6px;display:inline-flex;align-items:center;gap:8px;padding:16px 44px;background:var(--gold);color:#080808;text-decoration:none;letter-spacing:3px;text-transform:uppercase;font-size:.6rem;border:none;cursor:pointer;transition:all .3s;font-weight:600;font-family:inherit}
+#calcResult .btn:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+footer{padding:30px 0;text-align:center;border-top:1px solid var(--border);margin-top:auto}
+footer p{font-size:.6rem;color:var(--text2);letter-spacing:2px}
+footer a{color:var(--gold);text-decoration:none}
+@media(max-width:600px){
+.wiz-wrap{padding:40px 16px}
+.wiz-opts.cols-3{grid-template-columns:repeat(2,1fr)}
+.wiz-opts.cols-2{grid-template-columns:1fr;max-width:280px}
+.wiz-dot{width:24px;height:24px;font-size:.45rem}
+.wiz-nav{flex-direction:column;max-width:280px}
+.wiz-nav .btn{width:100%;justify-content:center}
+.wiz-progress{gap:2px}
+.wiz-line{width:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<a href="wizard.html">← Volver</a>
+<button class="lang-toggle" onclick="toggleLang()" id="langToggle" data-lang="es">EN</button>
+</div>
+</header>
+
+<div class="wiz-wrap">
+
+<div class="wiz-header">
+<p class="section-label" data-i18n="wv_label">Varios servicios</p>
+<h2 data-i18n="wv_title">Presupuesto para múltiples fechas</h2>
+<p data-i18n="wv_desc">Completá los datos y te enviamos una propuesta para todos los servicios que necesitás.</p>
+</div>
+
+<div class="wiz-progress" id="wizProgress"></div>
+
+<div class="wiz-steps" id="wizSteps">
+
+<!-- Step 0: How many services -->
+<div class="wiz-step active" data-step="0">
+<p class="wiz-q" data-i18n="wv_count_q">¿Cuántos servicios necesitás?</p>
+<div class="wiz-opts cols-3" style="max-width:360px">
+<button class="wiz-opt" data-value="2" onclick="selectWiz(this,'count')">2</button>
+<button class="wiz-opt selected" data-value="3" onclick="selectWiz(this,'count')">3</button>
+<button class="wiz-opt" data-value="4" onclick="selectWiz(this,'count')">4</button>
+<button class="wiz-opt" data-value="5" onclick="selectWiz(this,'count')">5</button>
+<button class="wiz-opt" data-value="6" onclick="selectWiz(this,'count')">6</button>
+<button class="wiz-opt" data-value="7" onclick="selectWiz(this,'count')">7+</button>
+</div></div>
+
+<!-- Step 1: Service type + Guests -->
+<div class="wiz-step" data-step="1">
+<p class="wiz-q" data-i18n="wv_svc_q">¿Qué tipo de servicio?</p>
+<div class="wiz-opts cols-2" style="max-width:440px;margin-bottom:20px">
+<button class="wiz-opt selected" data-value="cena" onclick="selectWiz(this,'type')"><span class="wiz-emoji">🍽️</span><span data-i18n="wv_svc_cena">Cena Privada</span></button>
+<button class="wiz-opt" data-value="evento" onclick="selectWiz(this,'type')"><span class="wiz-emoji">🎉</span><span data-i18n="wv_svc_evento">Evento Social</span></button>
+<button class="wiz-opt" data-value="maridaje" onclick="selectWiz(this,'type')"><span class="wiz-emoji">🍷</span><span data-i18n="wv_svc_maridaje">Maridaje</span></button>
+<button class="wiz-opt" data-value="degustacion" onclick="selectWiz(this,'type')"><span class="wiz-emoji">👨‍🍳</span><span data-i18n="wv_svc_degustacion">Menú Degustación</span></button>
+</div>
+<p class="wiz-q" style="font-size:.85rem" data-i18n="wv_pax_q">¿Para cuántas personas cada servicio?</p>
+<div class="wiz-opts cols-3" style="max-width:360px">
+<button class="wiz-opt" data-value="2" onclick="selectWiz(this,'pax')">2</button>
+<button class="wiz-opt" data-value="4" onclick="selectWiz(this,'pax')">4</button>
+<button class="wiz-opt selected" data-value="6" onclick="selectWiz(this,'pax')">6</button>
+<button class="wiz-opt" data-value="8" onclick="selectWiz(this,'pax')">8</button>
+<button class="wiz-opt" data-value="10" onclick="selectWiz(this,'pax')">10</button>
+<button class="wiz-opt" data-value="12" onclick="selectWiz(this,'pax')">12</button>
+</div></div>
+
+<!-- Step 2: Location + Time -->
+<div class="wiz-step" data-step="2">
+<p class="wiz-q" data-i18n="wv_loc_q">¿Dónde y a qué hora?</p>
+<div class="wiz-opts cols-1" style="max-width:340px;margin-bottom:20px">
+<button class="wiz-opt selected" data-value="local" onclick="selectWiz(this,'loc')" data-i18n="wv_loc_local">Playa del Carmen / Tulum</button>
+<button class="wiz-opt" data-value="lejos" onclick="selectWiz(this,'loc')" data-i18n="wv_loc_lejos">Cancún / Riviera Maya</button>
+<button class="wiz-opt" data-value="fuera" onclick="selectWiz(this,'loc')" data-i18n="wv_loc_fuera">Fuera de QRoo</button>
+</div>
+<div style="display:flex;gap:10px;justify-content:center;max-width:280px;margin:0 auto">
+<button class="wiz-opt selected" data-value="comida" onclick="selectWiz(this,'time')"><span class="wiz-emoji">☀️</span><span data-i18n="wv_time_lunch">Comida</span></button>
+<button class="wiz-opt" data-value="cena" onclick="selectWiz(this,'time')"><span class="wiz-emoji">🌙</span><span data-i18n="wv_time_dinner">Cena</span></button>
+</div></div>
+
+<!-- Step 3: Date range -->
+<div class="wiz-step" data-step="3">
+<p class="wiz-q" data-i18n="wv_dates_q">¿En qué fechas?</p>
+<p class="wiz-hint" data-i18n="wv_dates_hint">Seleccioná el rango de fechas para los servicios</p>
+<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+<input type="date" id="wvDateStart" class="wiz-input" min="2026-07-01" style="max-width:200px" data-i18n-placeholder="wv_start_ph">
+<input type="date" id="wvDateEnd" class="wiz-input" min="2026-07-01" style="max-width:200px" data-i18n-placeholder="wv_end_ph">
+</div></div>
+
+<!-- Step 4: Budget + Contact -->
+<div class="wiz-step" data-step="4">
+<p class="wiz-q" data-i18n="wv_budget_q">¿Presupuesto por servicio?</p>
+<div class="wiz-opts cols-3" style="max-width:480px;margin-bottom:24px">
+<button class="wiz-opt selected" data-value="casual" onclick="selectWiz(this,'budget')"><span data-i18n="wv_budget_casual">Casual</span><span class="wiz-sub" data-i18n="wv_budget_casual_sub">Ingredientes de temporada</span></button>
+<button class="wiz-opt" data-value="gourmet" onclick="selectWiz(this,'budget')"><span data-i18n="wv_budget_gourmet">Gourmet</span><span class="wiz-sub" data-i18n="wv_budget_gourmet_sub">Selección premium</span></button>
+<button class="wiz-opt" data-value="exclusive" onclick="selectWiz(this,'budget')"><span data-i18n="wv_budget_exclusive">Exclusivo</span><span class="wiz-sub" data-i18n="wv_budget_exclusive_sub">Lo mejor del mercado</span></button>
+</div>
+<p class="wiz-q" style="font-size:.85rem;margin-top:20px" data-i18n="wv_desc_q">Notas adicionales</p>
+<textarea id="wvDesc" class="wiz-textarea" placeholder="Ej: 3 cenas, 1 brunch..." data-i18n-placeholder="wv_desc_ph"></textarea>
+<div style="max-width:320px;margin:16px auto 0">
+<input type="text" id="wvName" class="wiz-input" placeholder="Nombre*" data-i18n-placeholder="wv_name_ph" style="max-width:320px">
+<input type="email" id="wvEmail" class="wiz-input" placeholder="Email*" data-i18n-placeholder="wv_email_ph" style="max-width:320px">
+<input type="tel" id="wvPhone" class="wiz-input" placeholder="Teléfono*" data-i18n-placeholder="wv_phone_ph" style="max-width:320px">
+</div></div>
+
+</div><!-- /wiz-steps -->
+
+<div class="wiz-nav">
+<button class="btn btn-outline" id="wizPrev" onclick="wizPrev()" data-i18n="wv_prev">Anterior</button>
+<button class="btn" id="wizNext" onclick="wizNext()" data-i18n="wv_next">Siguiente</button>
+</div>
+
+<div id="calcResult">
+<div class="calc-price" id="calcPrice">$0 USD</div>
+<div class="calc-note" id="calcNote"></div>
+<div class="calc-detail" id="calcDetail"></div>
+<a href="#" class="btn" id="calcCTA" data-i18n="wv_cta">Enviar solicitud</a>
+</div>
+
+</div>
+
+<footer>
+<p data-i18n="wv_footer">&copy; 2026 David Suarez · Cocinero Privado</p>
+<p style="margin-top:6px"><a href="terminos.html" style="color:var(--gold);text-decoration:none;font-size:.5rem;letter-spacing:2px;text-transform:uppercase">Términos y Condiciones</a></p>
+</footer>
+
+<script>
+const TOTAL_STEPS=5;
+let currentLang='es';
+let wizStep=0;
+let wizData={count:3,type:'cena',pax:6,loc:'local',time:'comida',dateStart:'',dateEnd:'',budget:'casual',description:'',name:'',email:'',phone:''};
+
+const lang={
+es:{
+wv_label:'Varios servicios',wv_title:'Presupuesto para múltiples fechas',wv_desc:'Completá los datos y te enviamos una propuesta para todos los servicios que necesitás.',
+wv_count_q:'¿Cuántos servicios necesitás?',
+wv_svc_q:'¿Qué tipo de servicio?',wv_svc_cena:'Cena Privada',wv_svc_evento:'Evento Social',wv_svc_maridaje:'Maridaje',wv_svc_degustacion:'Menú Degustación',
+wv_pax_q:'¿Para cuántas personas cada servicio?',
+wv_loc_q:'¿Dónde y a qué hora?',wv_loc_local:'Playa del Carmen / Tulum',wv_loc_lejos:'Cancún / Riviera Maya',wv_loc_fuera:'Fuera de QRoo',
+wv_time_lunch:'Comida',wv_time_dinner:'Cena',
+wv_dates_q:'¿En qué fechas?',wv_dates_hint:'Seleccioná el rango de fechas para los servicios',wv_start_ph:'Inicio',wv_end_ph:'Fin',
+wv_budget_q:'¿Presupuesto por servicio?',wv_budget_casual:'Casual',wv_budget_casual_sub:'Ingredientes de temporada',wv_budget_gourmet:'Gourmet',wv_budget_gourmet_sub:'Selección premium',wv_budget_exclusive:'Exclusivo',wv_budget_exclusive_sub:'Lo mejor del mercado',
+wv_desc_q:'Notas adicionales',wv_desc_ph:'Ej: 3 cenas, 1 brunch...',
+wv_name_ph:'Nombre*',wv_email_ph:'Email*',wv_phone_ph:'Teléfono*',
+wv_prev:'Anterior',wv_next:'Siguiente',wv_cta:'Enviar solicitud',
+wv_footer:'&copy; 2026 David Suarez · Cocinero Privado',
+wv_subject:'Solicitud de Varios Servicios',
+wv_email_pre:'Hola David, quiero cotizar varios servicios:\n\n',
+wv_email_count:'Cantidad de servicios: ',wv_email_type:'Tipo: ',wv_email_pax:'Personas por servicio: ',wv_email_loc:'Ubicación: ',wv_email_time:'Horario: ',wv_email_dates:'Rango de fechas: ',wv_email_budget:'Presupuesto por servicio: $',wv_email_desc:'Notas: ',
+wv_email_contact:'\n\nContacto:\n',wv_email_name:'Nombre: ',wv_email_phone:'Tel: ',
+wv_svc_labels:{cena:'Cena Privada',evento:'Evento Social',maridaje:'Maridaje',degustacion:'Menú Degustación'},
+wv_loc_labels:{local:'Playa del Carmen / Tulum',lejos:'Cancún / Riviera Maya',fuera:'Fuera de QRoo'},
+wv_tier_labels:{casual:'Casual',gourmet:'Gourmet',exclusive:'Exclusivo'},
+wv_result_label:'Estimado para',wv_result_pax:'personas por servicio',
+},
+en:{
+wv_label:'Multiple services',wv_title:'Budget for multiple dates',wv_desc:'Fill in the details and we\'ll send you a proposal for all the services you need.',
+wv_count_q:'How many services?',
+wv_svc_q:'What type of service?',wv_svc_cena:'Private Dinner',wv_svc_evento:'Social Event',wv_svc_maridaje:'Wine Pairing',wv_svc_degustacion:'Tasting Menu',
+wv_pax_q:'How many people per service?',
+wv_loc_q:'Where and when?',wv_loc_local:'Playa del Carmen / Tulum',wv_loc_lejos:'Cancun / Riviera Maya',wv_loc_fuera:'Outside QRoo',
+wv_time_lunch:'Lunch',wv_time_dinner:'Dinner',
+wv_dates_q:'What dates?',wv_dates_hint:'Select the date range for the services',wv_start_ph:'Start',wv_end_ph:'End',
+wv_budget_q:'Budget per service?',wv_budget_casual:'Casual',wv_budget_casual_sub:'Seasonal ingredients',wv_budget_gourmet:'Gourmet',wv_budget_gourmet_sub:'Premium selection',wv_budget_exclusive:'Exclusive',wv_budget_exclusive_sub:'Best of market',
+wv_desc_q:'Additional notes',wv_desc_ph:'E.g.: 3 dinners, 1 brunch...',
+wv_name_ph:'Name*',wv_email_ph:'Email*',wv_phone_ph:'Phone*',
+wv_prev:'Previous',wv_next:'Next',wv_cta:'Send request',
+wv_footer:'&copy; 2026 David Suarez · Private Chef',
+wv_subject:'Multiple Services Request',
+wv_email_pre:'Hi David, I want a quote for multiple services:\n\n',
+wv_email_count:'Number of services: ',wv_email_type:'Type: ',wv_email_pax:'People per service: ',wv_email_loc:'Location: ',wv_email_time:'Time: ',wv_email_dates:'Date range: ',wv_email_budget:'Budget per service: $',wv_email_desc:'Notes: ',
+wv_email_contact:'\n\nContact:\n',wv_email_name:'Name: ',wv_email_phone:'Phone: ',
+wv_svc_labels:{cena:'Private Dinner',evento:'Social Event',maridaje:'Wine Pairing',degustacion:'Tasting Menu'},
+wv_loc_labels:{local:'Playa del Carmen / Tulum',lejos:'Cancun / Riviera Maya',fuera:'Outside QRoo'},
+wv_tier_labels:{casual:'Casual',gourmet:'Gourmet',exclusive:'Exclusive'},
+wv_result_label:'Estimate for',wv_result_pax:'people per service',
+}
+};
+
+function getLang(){return currentLang;}
+
+function buildProgress(){
+const p=document.getElementById('wizProgress');p.innerHTML='';
+for(let i=0;i<TOTAL_STEPS;i++){
+const d=document.createElement('div');d.className='wiz-dot'+(i===0?' active':'');d.dataset.step=i;d.textContent=i+1;p.appendChild(d);
+if(i<TOTAL_STEPS-1){const l=document.createElement('div');l.className='wiz-line';p.appendChild(l);}
+}
+}
+function updateProgress(n){
+document.querySelectorAll('.wiz-dot').forEach((el,i)=>{el.classList.toggle('active',i===n);el.classList.toggle('done',i<n);});
+document.querySelectorAll('.wiz-line').forEach((el,i)=>{el.classList.toggle('done',i<n);});
+}
+
+function selectWiz(el,field){
+const parent=el.parentElement;
+parent.querySelectorAll('.wiz-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');
+if(field==='count')wizData.count=parseInt(el.dataset.value);
+else if(field==='type')wizData.type=el.dataset.value;
+else if(field==='pax')wizData.pax=parseInt(el.dataset.value);
+else if(field==='loc')wizData.loc=el.dataset.value;
+else if(field==='time')wizData.time=el.dataset.value;
+else if(field==='budget')wizData.budget=el.dataset.value;
+}
+
+function showWizStep(n){
+wizStep=n;updateProgress(n);
+document.querySelectorAll('.wiz-step').forEach((el,i)=>el.classList.toggle('active',i===n));
+const l=getLang();const cfg=lang[l];
+const wp=document.getElementById('wizPrev');const wn=document.getElementById('wizNext');
+wp.style.display=n===0?'none':'inline-flex';wp.textContent=cfg.wv_prev;
+wn.textContent=cfg.wv_next;wn.onclick=wizNext;
+if(n===TOTAL_STEPS-1)wn.textContent=l==='es'?'Ver presupuesto':'See estimate';
+document.getElementById('calcResult').style.display='none';
+}
+
+function wizPrev(){if(wizStep>0)showWizStep(wizStep-1);}
+function wizNext(){
+document.querySelectorAll('.wiz-input,.wiz-select').forEach(el=>el.classList.remove('invalid'));
+if(wizStep===4){
+let valid=true;
+if(!document.getElementById('wvName').value.trim()){document.getElementById('wvName').classList.add('invalid');valid=false;}
+if(!document.getElementById('wvEmail').value.trim()||!document.getElementById('wvEmail').value.includes('@')){document.getElementById('wvEmail').classList.add('invalid');valid=false;}
+if(!document.getElementById('wvPhone').value.trim()){document.getElementById('wvPhone').classList.add('invalid');valid=false;}
+if(!valid)return;
+showCalcResult();return;}
+if(wizStep<TOTAL_STEPS-1)showWizStep(wizStep+1);}
+
+function showCalcResult(){
+const l=getLang();const cfg=lang[l];
+wizData.dateStart=document.getElementById('wvDateStart').value;
+wizData.dateEnd=document.getElementById('wvDateEnd').value;
+wizData.description=document.getElementById('wvDesc').value;
+wizData.name=document.getElementById('wvName').value;
+wizData.email=document.getElementById('wvEmail').value;
+wizData.phone=document.getElementById('wvPhone').value;
+const basePrice={cena:35,evento:45,maridaje:50,degustacion:55};
+const locFee={local:1,lejos:1.15,fuera:1.35};
+const tierMult={casual:1,gourmet:1.5,exclusive:2.5};
+const base=basePrice[wizData.type]||35;
+const mult=tierMult[wizData.budget]||1;
+const perSvc=Math.round(base*wizData.pax*locFee[wizData.loc]*mult);
+const total=perSvc*wizData.count;
+document.getElementById('calcPrice').textContent='$'+total+' USD ($'+perSvc+'/'+(l==='es'?'servicio':'service')+')';
+const note=cfg.wv_result_label+' '+wizData.count+' '+(l==='es'?'servicios':'services')+' · '+cfg.wv_svc_labels[wizData.type]+' · '+cfg.wv_loc_labels[wizData.loc];
+document.getElementById('calcNote').textContent=note;
+let detail='';
+detail+=wizData.pax+' '+cfg.wv_result_pax;
+if(wizData.dateStart)detail+=' · '+wizData.dateStart+(wizData.dateEnd?' - '+wizData.dateEnd:'');
+document.getElementById('calcDetail').textContent=detail;
+document.getElementById('calcResult').style.display='block';
+document.getElementById('calcResult').scrollIntoView({behavior:'smooth',block:'center'});
+const timeLabel=l==='es'?(wizData.time==='comida'?'Comida':'Cena'):(wizData.time==='comida'?'Lunch':'Dinner');
+const cta=document.getElementById('calcCTA');
+let body=cfg.wv_email_pre;
+body+=cfg.wv_email_count+wizData.count+'\n';
+body+=cfg.wv_email_type+cfg.wv_svc_labels[wizData.type]+'\n';
+body+=cfg.wv_email_pax+wizData.pax+'\n';
+body+=cfg.wv_email_loc+cfg.wv_loc_labels[wizData.loc]+'\n';
+body+=cfg.wv_email_time+timeLabel+'\n';
+body+=cfg.wv_email_dates+(wizData.dateStart||'TBD')+(wizData.dateEnd?' - '+wizData.dateEnd:'')+'\n';
+body+=cfg.wv_email_budget+perSvc+' USD\n';
+body+=cfg.wv_email_count+'Total estimado: $'+total+' USD\n';
+if(wizData.description)body+=cfg.wv_email_desc+wizData.description+'\n';
+body+=cfg.wv_email_contact;
+body+=cfg.wv_email_name+wizData.name+'\nEmail: '+wizData.email+'\n';
+body+=cfg.wv_email_phone+wizData.phone;
+cta.href='mailto:hola@davidsuarezchef.com?subject='+encodeURIComponent(cfg.wv_subject)+'&body='+encodeURIComponent(body);
+}
+
+function toggleLang(){
+const btn=document.getElementById('langToggle');
+currentLang=currentLang==='es'?'en':'es';
+btn.textContent=currentLang==='es'?'EN':'ES';
+const t=lang[currentLang];
+document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;el.textContent=t[k]||el.textContent;});
+document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const k=el.dataset.i18nPlaceholder;if(t[k])el.placeholder=t[k];});
+const wn=document.getElementById('wizNext');const wp=document.getElementById('wizPrev');
+if(wp)wp.textContent=t.wv_prev;
+if(wn){wn.textContent=wizStep===TOTAL_STEPS-1?(currentLang==='es'?'Ver presupuesto':'See estimate'):t.wv_next;}
+}
+
+buildProgress();showWizStep(0);
+</script>
+</body>
+</html>

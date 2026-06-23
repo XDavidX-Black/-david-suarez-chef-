@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cotiza tu evento · David Suarez Chef</title>
+<meta name="description" content="Elegí el tipo de servicio que buscás: cena única, varios eventos o comidas semanales. Recibí un presupuesto personalizado.">
+<meta name="theme-color" content="#0a0a0a">
+<style>
+:root{--gold:#e8c45a;--bg:#0a0a0a;--bg2:#111;--card:#151515;--text:#ede8e0;--text2:#706860;--border:rgba(232,196,90,0.1);--transition:0.4s ease}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+header{padding:18px 0;background:rgba(10,10,10,0.95);border-bottom:1px solid var(--border)}
+header .container{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;align-items:center}
+header a{color:var(--text2);text-decoration:none;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;transition:color .3s}
+header a:hover{color:var(--gold)}
+.lang-toggle{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:inherit;line-height:1}
+.lang-toggle:hover{color:var(--gold);border-color:var(--gold)}
+.selector-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:800px;margin:0 auto;padding:60px 28px;width:100%}
+.selector-header{text-align:center;margin-bottom:50px}
+.selector-header .section-label{font-size:.55rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.selector-header h2{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:300;letter-spacing:2px;margin-bottom:10px}
+.selector-header p{color:var(--text2);font-size:.85rem;max-width:500px;margin:0 auto}
+.sel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.sel-card{background:var(--card);border:1px solid var(--border);padding:40px 28px;text-align:center;cursor:pointer;transition:all .3s;text-decoration:none;color:var(--text);display:flex;flex-direction:column;align-items:center}
+.sel-card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.sel-card .sel-icon{font-size:2.4rem;margin-bottom:14px;line-height:1}
+.sel-card h3{font-size:.9rem;font-weight:400;letter-spacing:2px;margin-bottom:8px}
+.sel-card p{color:var(--text2);font-size:.75rem;line-height:1.6;margin-bottom:16px}
+.sel-card .sel-arrow{color:var(--gold);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;margin-top:auto}
+.sel-card:hover .sel-arrow{color:var(--text)}
+footer{padding:30px 0;text-align:center;border-top:1px solid var(--border);margin-top:auto}
+footer p{font-size:.6rem;color:var(--text2);letter-spacing:2px}
+footer a{color:var(--gold);text-decoration:none}
+@media(max-width:600px){
+.selector-wrap{padding:40px 16px}
+.sel-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<a href="durable-copy.html">← Volver al inicio</a>
+<button class="lang-toggle" onclick="toggleLang()" id="langToggle" data-lang="es">EN</button>
+</div>
+</header>
+
+<div class="selector-wrap">
+
+<div class="selector-header">
+<p class="section-label" data-i18n="sel_label">Cotización paso a paso</p>
+<h2 data-i18n="sel_title">¿Qué tipo de servicio buscás?</h2>
+<p data-i18n="sel_desc">Elegí la opción que mejor se ajuste a lo que necesitás y completá el formulario específico para recibir tu presupuesto personalizado.</p>
+</div>
+
+<div class="sel-grid">
+<a href="wizard-unico.html" class="sel-card" id="cardUnico">
+<div class="sel-icon">🍽️</div>
+<h3 data-i18n="sel_unico_title">Servicio único</h3>
+<p data-i18n="sel_unico_desc">Una cena, un evento, una ocasión especial. Todo planeado para esa fecha.</p>
+<span class="sel-arrow" data-i18n="sel_unico_cta">Cotizar →</span>
+</a>
+
+<a href="wizard-varios.html" class="sel-card" id="cardVarios">
+<div class="sel-icon">📅</div>
+<h3 data-i18n="sel_varios_title">Varios servicios</h3>
+<p data-i18n="sel_varios_desc">Múltiples fechas durante tus vacaciones o eventos corporativos.</p>
+<span class="sel-arrow" data-i18n="sel_varios_cta">Cotizar →</span>
+</a>
+
+<a href="wizard-semanal.html" class="sel-card" id="cardSemanal">
+<div class="sel-icon">🥘</div>
+<h3 data-i18n="sel_semanal_title">Comidas semanales</h3>
+<p data-i18n="sel_semanal_desc">Un chef cocina en tu casa una vez por semana y deja todo listo para varios días.</p>
+<span class="sel-arrow" data-i18n="sel_semanal_cta">Cotizar →</span>
+</a>
+</div>
+
+</div>
+
+<footer>
+<p data-i18n="sel_footer">&copy; 2026 David Suarez · Cocinero Privado</p>
+<p style="margin-top:6px"><a href="terminos.html" style="color:var(--gold);text-decoration:none;font-size:.5rem;letter-spacing:2px;text-transform:uppercase">Términos y Condiciones</a></p>
+</footer>
+
+<script>
+const lang={
+es:{
+sel_label:'Cotización paso a paso',sel_title:'¿Qué tipo de servicio buscás?',sel_desc:'Elegí la opción que mejor se ajuste a lo que necesitás y completá el formulario específico para recibir tu presupuesto personalizado.',
+sel_unico_title:'Servicio único',sel_unico_desc:'Una cena, un evento, una ocasión especial. Todo planeado para esa fecha.',sel_unico_cta:'Cotizar →',
+sel_varios_title:'Varios servicios',sel_varios_desc:'Múltiples fechas durante tus vacaciones o eventos corporativos.',sel_varios_cta:'Cotizar →',
+sel_semanal_title:'Comidas semanales',sel_semanal_desc:'Un chef cocina en tu casa una vez por semana y deja todo listo para varios días.',sel_semanal_cta:'Cotizar →',
+sel_footer:'&copy; 2026 David Suarez · Cocinero Privado'
+},
+en:{
+sel_label:'Step-by-step quote',sel_title:'What type of service?',sel_desc:'Choose the option that best fits your needs and complete the specific form to get your personalized quote.',
+sel_unico_title:'Single service',sel_unico_desc:'One dinner, one event, one special occasion. Everything planned for that date.',sel_unico_cta:'Get quote →',
+sel_varios_title:'Multiple services',sel_varios_desc:'Multiple dates during your vacation or corporate events.',sel_varios_cta:'Get quote →',
+sel_semanal_title:'Weekly meals',sel_semanal_desc:'A chef cooks at your home once a week and preps everything for several days.',sel_semanal_cta:'Get quote →',
+sel_footer:'&copy; 2026 David Suarez · Private Chef'
+}
+};
+
+let currentLang='es';
+function getLang(){return currentLang;}
+function toggleLang(){
+const btn=document.getElementById('langToggle');
+currentLang=currentLang==='es'?'en':'es';
+btn.textContent=currentLang==='es'?'EN':'ES';
+const t=lang[currentLang];
+document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;el.textContent=t[k]||el.textContent;});
+}
+</script>
+</body>
+</html>
